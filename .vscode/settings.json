@@ -1,0 +1,8 @@
+{
+    "material-icon-theme.folders.associations": {
+        "(pages)": "Interface",
+        "forms": "Class", 
+        "(auth)": "Secure",
+        "(main)": "Content"
+    }
+}
