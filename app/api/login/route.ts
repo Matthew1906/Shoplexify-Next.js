@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { comparePassword } from '@/app/_lib/auth';
 import prisma from '@/app/_lib/prisma';
 
-// TODO: NextAuth Implementation
 export async function POST(req:Request){
     try {
         const formData = await req.formData();

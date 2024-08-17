@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { TextButton } from "@/app/_components/utils";
 import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/_lib/font";
@@ -8,7 +9,7 @@ import { authResponse } from "@/app/_lib/interface";
 
 export default function Register(){
     const [ errorStatus, setErrorStatus ] = useState<authResponse>();
-    // Example login response {status:false, error:"email", message:"error email"}
+    const router = useRouter();
     const handleSubmit = async(event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -16,8 +17,12 @@ export default function Register(){
             method: 'POST',
             body: formData,
         });
-        // Handle response if necessary
         const data = await response.json();
+        setErrorStatus({status:data.status, error:data?.error, message:data?.message});
+        if(data.status){
+            router.push('/login');
+            router.refresh();
+        }
     }
     return <main className='p-5 w-full flex justify-center items-start'>
         <form onSubmit={handleSubmit} className="p-10 bg-white border-1 border-black rounded-lg w-1/4 flex-center flex-col gap-2 drop-shadow-md">

@@ -8,14 +8,14 @@ datasource db {
 }
 
 model categories {
-  id                 String               @id @db.VarChar(255)
+  id                 Int                  @id @default(autoincrement())
   name               String               @unique @db.VarChar(255)
   product_categories product_categories[]
 }
 
 model orders {
   user_id    Int
-  product_id String   @db.VarChar(255)
+  product_id Int
   quantity   Int
   products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users      users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -24,8 +24,8 @@ model orders {
 }
 
 model product_categories {
-  product_id  String     @db.VarChar(255)
-  category_id String     @db.VarChar(255)
+  product_id  Int
+  category_id Int
   categories  categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   products    products   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
@@ -33,7 +33,7 @@ model product_categories {
 }
 
 model products {
-  id                  String                @id @db.VarChar(255)
+  id                  Int                   @id @default(autoincrement())
   name                String                @unique @db.VarChar(255)
   description         String                @db.VarChar(5000)
   image_url           String                @db.VarChar(5000)
@@ -48,7 +48,7 @@ model products {
 model reviews {
   id         Int       @id @default(autoincrement())
   user_id    Int?
-  product_id String?   @db.VarChar(255)
+  product_id Int?
   rating     Int
   review     String    @db.VarChar(5000)
   products   products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -57,7 +57,7 @@ model reviews {
 
 model transaction_details {
   transaction_id Int
-  product_id     String       @db.VarChar(255)
+  product_id     Int
   quantity       Int
   price          Int
   products       products     @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -84,7 +84,7 @@ model users {
   name         String         @unique @db.VarChar(255)
   email        String         @unique @db.VarChar(255)
   password     String         @db.VarChar(255)
-  dob          DateTime       @db.Date
+  dob          DateTime?      @db.Date
   orders       orders[]
   reviews      reviews[]
   transactions transactions[]
