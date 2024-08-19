@@ -9,6 +9,7 @@ datasource db {
 
 model categories {
   id                 Int                  @id @default(autoincrement())
+  slug               String               @unique @db.VarChar(255)
   name               String               @unique @db.VarChar(255)
   product_categories product_categories[]
 }
@@ -34,6 +35,7 @@ model product_categories {
 
 model products {
   id                  Int                   @id @default(autoincrement())
+  slug                String                @unique @db.VarChar(255)
   name                String                @unique @db.VarChar(255)
   description         String                @db.VarChar(5000)
   image_url           String                @db.VarChar(5000)
