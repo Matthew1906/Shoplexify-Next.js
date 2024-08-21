@@ -1,3 +1,5 @@
+'use server'
+
 import { Product, searchParams } from "../_lib/interface";
 
 export const getProducts = async(searchParams: searchParams|null): Promise<Array<Product>|undefined>=>{

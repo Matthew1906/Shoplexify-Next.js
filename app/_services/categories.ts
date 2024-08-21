@@ -1,3 +1,5 @@
+'use server'
+
 import { categories } from "@prisma/client";
 
 export const getCategories = async(): Promise<Array<categories>|undefined>=>{

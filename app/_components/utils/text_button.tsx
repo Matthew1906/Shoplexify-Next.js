@@ -5,7 +5,7 @@ import { roboto_semibold } from "@/app/_lib/font";
 const TextButton = (
     {theme='primary', text, isForm=false, onClick } : {theme?:string, text:string, isForm?:boolean, onClick?: ()=>void}
 ) => {
-    const themeStyle = theme=='secondary'?"border-navy-blue text-navy-blue bg-white":"border-navy-blue text-white bg-navy-blue";
+    const themeStyle = theme=='secondary'?"border-navy-blue text-navy-blue bg-white":"border-white text-white bg-navy-blue";
     return <button
         type={isForm?"submit":"button"} 
         onClick = {onClick??undefined}
