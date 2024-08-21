@@ -29,17 +29,26 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
             const editableParams = new URLSearchParams(searchParams);
             if(selectedCategories.length>0){
                 editableParams.set("categories", selectedCategories);
+            } else {
+                editableParams.delete("categories");
             }
-            if(minPrice!=0){
+            if(!Number.isNaN(minPrice)){
                 editableParams.set("minPrice", minPrice.toString());
+            } else {
+                editableParams.delete("minPrice");
             }
-            if(maxPrice!=0){
+            if(!Number.isNaN(maxPrice)){
                 editableParams.set("maxPrice", maxPrice.toString());
+            } else {
+                editableParams.delete("maxPrice");
             }
             if(selectedRatings.length>0){
                 editableParams.set("rating", selectedRatings);
+            } else {
+                editableParams.delete("rating");
             }
-            router.push(`${pathname}?${editableParams.toString()}`)   
+            router.push(`${pathname}?${editableParams.toString()}`);
+            router.refresh(); 
         }
     }
     // Reset parameters

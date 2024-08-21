@@ -14,7 +14,8 @@ export interface searchParams {
     categories?: string,
     minPrice?: number,
     maxPrice?: number,
-    rating?: string
+    rating?: string,
+    sortBy?: string
 }
 
 export interface Product {
