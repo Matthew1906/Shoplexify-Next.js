@@ -20,6 +20,9 @@ const nextConfig = {
       serverActions: {
         bodySizeLimit: '25mb',
       },
+    },
+    env: {
+      SERVER_URL: process.env.SERVER_URL,
     }
 };
 

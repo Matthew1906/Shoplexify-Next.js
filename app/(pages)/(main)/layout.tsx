@@ -10,7 +10,7 @@ export default function RootLayout(
     const session = useSession();
     return (
         <>
-            <Header isAuth={false} isLoggedIn={session.status=='authenticated'} isAdmin={session.data?.role=='admin'}/>
+            <Header isAuth={false} isLoggedIn={session.status=='authenticated'} isAdmin={session.data?.role=='admin'} username={session.data?.name}/>
             {children}
         </>
     );

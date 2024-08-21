@@ -3,6 +3,14 @@
         "(pages)": "Interface",
         "forms": "Class", 
         "(auth)": "Secure",
-        "(main)": "Content"
+        "(main)": "Content",
+        "modals":"UI",
+        "products":"Container",
+        "profile":"Controller",
+        "transactions":"Connection",
+        "migrations":"Mappings",
+        "users":"Controller",
+        "login":"Secure",
+        "categories":"Constant"
     }
 }

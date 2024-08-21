@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { generatePassword } from '@/app/_lib/auth';
 import prisma from '@/app/_lib/prisma';
+import { generatePassword } from '@/app/_lib/auth';
 
 export async function POST(req:Request){
     try {
