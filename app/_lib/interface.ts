@@ -26,3 +26,9 @@ export interface Product {
     avg_rating: number,
     num_sold: number,
 }
+
+export interface productResponse {
+    page?: number,
+    length?: number,
+    data?: Array<Product>
+}

@@ -1,8 +1,8 @@
 'use server'
 
-import { Product, searchParams } from "../_lib/interface";
+import { productResponse, searchParams } from "../_lib/interface";
 
-export const getProducts = async(searchParams: searchParams|null): Promise<Array<Product>|undefined>=>{
+export const getProducts = async(searchParams: searchParams|null): Promise<productResponse|undefined>=>{
     try {
         const editableParams = new URLSearchParams();
         if(searchParams?.query){
@@ -17,16 +17,16 @@ export const getProducts = async(searchParams: searchParams|null): Promise<Array
         if(searchParams?.maxPrice){
             editableParams.set("maxPrice", searchParams?.maxPrice.toString());
         } 
-        if(searchParams?.rating){
-            editableParams.set("rating", searchParams?.rating);
-        } 
+        // if(searchParams?.rating){
+        //     editableParams.set("rating", searchParams?.rating);
+        // } 
         if(searchParams?.sortBy){
             editableParams.set("sortBy", searchParams?.sortBy);
         } 
         const url = `${process.env.SERVER_URL}/api/products?${editableParams.toString()}`;
         const response = await fetch(url, {method:"GET"});
         const jsonResponse = await response.json();
-        return jsonResponse.data ;
+        return jsonResponse;
     } catch(error){
         console.log(error)
     }

@@ -7,6 +7,42 @@ export async function GET(req:NextRequest){
     try{
         const searchParams = req.nextUrl.searchParams;
         const isQueryExist = (key:string)=>searchParams.get(key)??false;
+        const sortBy = searchParams.get('sortBy')??"";
+        const page = parseInt(searchParams.get('page')??"1");
+        const length = await prisma.products.count({
+            where:{
+                AND:[ 
+                    { OR:[
+                        isQueryExist('query') ? 
+                            { name: { 
+                                contains: searchParams.get("query")??"", 
+                                mode:"insensitive" 
+                            } } : {}, 
+                        isQueryExist('query') ? 
+                            { description: { 
+                                contains: searchParams.get("query")??"", 
+                                mode:"insensitive"
+                            } } : {}, 
+                    ] }, 
+                    isQueryExist('categories') ? 
+                        { product_categories : { 
+                            some: {
+                                categories: { 
+                                    slug : { in: searchParams.get("categories")?.split(",")??[] } 
+                                }
+                            }
+                        } } : {},
+                    isQueryExist('minPrice') ? 
+                        { price: { 
+                            gte: parseInt(searchParams.get('minPrice')??"")
+                        } } : {}, 
+                    isQueryExist('maxPrice') ? 
+                        { price: { 
+                            lte: parseInt(searchParams.get('maxPrice')??"")
+                        } } : {}, 
+                ]
+            },
+        });
         const data = await prisma.products.findMany({
             where:{
                 AND:[ 
@@ -39,7 +75,17 @@ export async function GET(req:NextRequest){
                             lte: parseInt(searchParams.get('maxPrice')??"")
                         } } : {}, 
                 ]
-            }, 
+            },
+            skip: 2 * page,
+            take: 2,
+            orderBy:[
+                isQueryExist('sortBy') 
+                ? sortBy == 'name-asc'? { name: 'asc'}
+                : sortBy == 'name-desc'? { name: 'desc'} 
+                : sortBy == 'price-asc'? { price: 'asc'}
+                : sortBy == 'price-desc'? { price: 'desc'}   
+                : { id :'asc' } : { id:'asc' }, 
+            ],
             select:{
                 slug:true,
                 name:true, 
@@ -69,11 +115,14 @@ export async function GET(req:NextRequest){
                 avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length)
             }
         })
-        const ratings = searchParams.get('rating')?.split(",").map(rating=>parseInt(rating))??[];
+        // const ratings = searchParams.get('rating')?.split(",").map(rating=>parseInt(rating))??[];
         return NextResponse.json({
-            data:isQueryExist('rating') 
-            ? products.filter(product=>ratings.includes(Math.ceil(product.avg_rating)))
-            : products
+            page:page,
+            length:length,
+            data:products
+            // data:isQueryExist('rating') 
+            // ? products.filter(product=>ratings.includes(Math.ceil(product.avg_rating)))
+            // : products
         });
     } catch (error) {
         console.log(error);

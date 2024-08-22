@@ -5,7 +5,7 @@ import { roboto_bold, roboto_semibold } from "@/app/_lib/font"
 import { categories } from "@prisma/client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FormEvent, useState } from "react"
-import { MdStar } from "react-icons/md"
+// import { MdStar } from "react-icons/md"
 
 const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     // Validate number input
@@ -20,7 +20,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
         setPriceRangeError(null);
         const formData = new FormData(event.currentTarget);
         const selectedCategories = formData.getAll('categories').join(",");
-        const selectedRatings = formData.getAll('rating').join(",");
+        // const selectedRatings = formData.getAll('rating').join(",");
         const minPrice = parseInt(formData.get("minPrice")?.toString()??"");
         const maxPrice = parseInt(formData.get("maxPrice")?.toString()??"");
         if(minPrice>maxPrice){
@@ -42,11 +42,11 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
             } else {
                 editableParams.delete("maxPrice");
             }
-            if(selectedRatings.length>0){
-                editableParams.set("rating", selectedRatings);
-            } else {
-                editableParams.delete("rating");
-            }
+            // if(selectedRatings.length>0){
+            //     editableParams.set("rating", selectedRatings);
+            // } else {
+            //     editableParams.delete("rating");
+            // }
             router.push(`${pathname}?${editableParams.toString()}`);
             router.refresh(); 
         }
@@ -80,7 +80,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                         type="number" name="minPrice" id="minPrice" 
                         placeholder="Minimum price"
                         min={0}
-                        defaultValue={parseInt(searchParams.get("minPrice")??"")}
+                        defaultValue={parseInt(searchParams.get("minPrice")??"0")}
                         className={`${roboto_semibold.className} px-4 py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
                     />
                 </div>
@@ -89,13 +89,13 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                     <input 
                         type="number" name="maxPrice" id="maxPrice"
                         placeholder="Maximum price"
-                        defaultValue={parseInt(searchParams.get("maxPrice")??"")}
+                        defaultValue={parseInt(searchParams.get("maxPrice")??"0")}
                         min={0}
                         className={`${roboto_semibold.className} px-4 py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
                     />
                 </div>
             </div>
-            <div className="flex flex-col items-start mb-5">
+            {/* <div className="flex flex-col items-start mb-5">
                 <h3 className={`${roboto_bold.className} text-xl mb-2`}>Rating:</h3>
                 {Array.from({ length: 5 }, (_, i) => 5-i).map((idx:number)=>{
                     return <div className="flex-center gap-2 mb-2" key={idx}>
@@ -112,7 +112,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                         </label>
                     </div>
                 })}
-            </div>
+            </div> */}
             <div className="flex justify-between gap-5">
                 <TextButton text="Reset" theme="secondary" onClick={resetParams}/>
                 <TextButton text="Apply" isForm/>
