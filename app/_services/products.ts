@@ -23,6 +23,9 @@ export const getProducts = async(searchParams: searchParams|null): Promise<produ
         if(searchParams?.sortBy){
             editableParams.set("sortBy", searchParams?.sortBy);
         } 
+        if(searchParams?.page){
+            editableParams.set("page", searchParams?.page.toString());
+        } 
         const url = `${process.env.SERVER_URL}/api/products?${editableParams.toString()}`;
         const response = await fetch(url, {method:"GET"});
         const jsonResponse = await response.json();

@@ -13,6 +13,7 @@ const SortBy = ()=>{
         const sortBy = event.currentTarget.value;
         const editableParams =  new URLSearchParams(searchParams);
         editableParams.set("sortBy", sortBy);
+        editableParams.set("page", "1");
         router.push(`${pathname}?${editableParams.toString()}`);
         router.refresh(); 
     }

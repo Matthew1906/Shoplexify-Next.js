@@ -16,6 +16,7 @@ export interface searchParams {
     maxPrice?: number,
     rating?: string,
     sortBy?: string
+    page?: number
 }
 
 export interface Product {

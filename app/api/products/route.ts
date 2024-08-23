@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/app/_lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest){
@@ -9,6 +10,7 @@ export async function GET(req:NextRequest){
         const isQueryExist = (key:string)=>searchParams.get(key)??false;
         const sortBy = searchParams.get('sortBy')??"";
         const page = parseInt(searchParams.get('page')??"1");
+        const pageLength:number = parseInt(process.env.PAGE_LENGTH??"5");
         const length = await prisma.products.count({
             where:{
                 AND:[ 
@@ -76,8 +78,8 @@ export async function GET(req:NextRequest){
                         } } : {}, 
                 ]
             },
-            skip: 2 * page,
-            take: 2,
+            skip: pageLength * (page-1),
+            take: pageLength,
             orderBy:[
                 isQueryExist('sortBy') 
                 ? sortBy == 'name-asc'? { name: 'asc'}
@@ -115,6 +117,7 @@ export async function GET(req:NextRequest){
                 avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length)
             }
         })
+        revalidatePath('/products')
         // const ratings = searchParams.get('rating')?.split(",").map(rating=>parseInt(rating))??[];
         return NextResponse.json({
             page:page,

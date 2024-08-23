@@ -23,6 +23,7 @@ const nextConfig = {
     },
     env: {
       SERVER_URL: process.env.SERVER_URL,
+      PAGE_LENGTH: process.env.PAGE_LENGTH
     }
 };
 

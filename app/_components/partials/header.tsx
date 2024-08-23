@@ -9,10 +9,10 @@ import { SearchBar } from "../helpers";
 
 const Header = (
     { isAuth=false, isLoggedIn=true, username, isAdmin=false }:
-    { isAuth:boolean, isLoggedIn?:boolean, username?:string, isAdmin?:boolean }
+    { isAuth:boolean, isLoggedIn:boolean, username?:string, isAdmin:boolean }
 )=>{
     return <header className="bg-navy-blue py-8 px-10 flex justify-between items-center">
-        <div className="flex flex-grow justify-around items-center gap-8">
+        <div className={`flex ${!isAuth?"flex-grow justify-around":"justify-start"} items-center gap-8`}>
             <LogoIcon/>
             { !isAuth &&  
                 <> { isLoggedIn && isAdmin // admin login 

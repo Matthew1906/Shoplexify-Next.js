@@ -47,6 +47,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
             // } else {
             //     editableParams.delete("rating");
             // }
+            editableParams.set("page", "1");
             router.push(`${pathname}?${editableParams.toString()}`);
             router.refresh(); 
         }
@@ -56,7 +57,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
         router.replace(pathname);
     }
     return (
-        <form onSubmit={handleSubmit} className="col-span-2 flex flex-col items-start">
+        <form onSubmit={handleSubmit} method='GET' className="col-span-2 flex flex-col items-start">
             <div className="flex flex-col items-start mb-5">
                 <h3 className={`${roboto_bold.className} text-xl mb-2`}>Categories:</h3>
                 {categories && categories.map((category:categories)=>{
@@ -89,7 +90,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                     <input 
                         type="number" name="maxPrice" id="maxPrice"
                         placeholder="Maximum price"
-                        defaultValue={parseInt(searchParams.get("maxPrice")??"0")}
+                        defaultValue={parseInt(searchParams.get("maxPrice")??"20000000")}
                         min={0}
                         className={`${roboto_semibold.className} px-4 py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
                     />

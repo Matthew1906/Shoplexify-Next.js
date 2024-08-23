@@ -11,12 +11,12 @@ export default async function Page(
 ){  
     const categories: Array<categories> | undefined = await getCategories();
     const productData: productResponse | undefined = await getProducts(searchParams??null);
-    return <div className="grid grid-cols-7 gap-5 p-10">
+    return <main className="grid grid-cols-7 gap-5 p-10">
         <FilterForm categories={categories} />
         <div className="col-span-5">
             <Suspense fallback={<p key={0}>Loading...</p>}>
                 <Pagination products={productData}/>
             </Suspense>
         </div>
-    </div>
+    </main>
 }
