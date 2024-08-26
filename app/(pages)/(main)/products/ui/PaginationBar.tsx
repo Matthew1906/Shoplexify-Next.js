@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { roboto_bold } from "@/app/_lib/font";
+import { roboto_bold } from "@/app/lib/font";
 
 const pageLength:number = parseInt(process.env.PAGE_LENGTH??"5");
 
@@ -23,7 +23,7 @@ const PaginationBar = ({page, total}:{page:number, total:number})=>{
         event.preventDefault();
         const editableParams = new URLSearchParams(searchParams);
         editableParams.set("page", (page-1).toString());
-        router.push(`${pathname}?${editableParams.toString()}`);
+        router.replace(`${pathname}?${editableParams.toString()}`);
         router.refresh();
     }
     // const movePage = (page:number)=>{

@@ -1,12 +1,12 @@
 'use client'
 
-import { Product, productResponse } from "@/app/_lib/interface";
+import { Product, productsResponse } from "@/app/lib/interface";
 import PaginationHeader from "./PaginationHeader";
 import PaginationBar from "./PaginationBar";
 import ProductCard from "./ProductCard";
 
 const Pagination = (
-    {products}:{products:productResponse|undefined}
+    {products}:{products:productsResponse|undefined}
 )=>{
     return (
         <>

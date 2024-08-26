@@ -1,7 +1,7 @@
 'use client'
 
-import { TextButton } from "@/app/_components/utils"
-import { roboto_bold, roboto_semibold } from "@/app/_lib/font"
+import { TextButton } from "@/app/components/utils"
+import { roboto_bold, roboto_semibold } from "@/app/lib/font"
 import { categories } from "@prisma/client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FormEvent, useState } from "react"
@@ -48,7 +48,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
             //     editableParams.delete("rating");
             // }
             editableParams.set("page", "1");
-            router.push(`${pathname}?${editableParams.toString()}`);
+            router.replace(`${pathname}?${editableParams.toString()}`);
             router.refresh(); 
         }
     }

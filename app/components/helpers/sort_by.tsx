@@ -1,6 +1,6 @@
 'use client'
 
-import { roboto_regular, roboto_semibold } from "@/app/_lib/font";
+import { roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent } from "react";
 
@@ -14,7 +14,7 @@ const SortBy = ()=>{
         const editableParams =  new URLSearchParams(searchParams);
         editableParams.set("sortBy", sortBy);
         editableParams.set("page", "1");
-        router.push(`${pathname}?${editableParams.toString()}`);
+        router.replace(`${pathname}?${editableParams.toString()}`);
         router.refresh(); 
     }
     return <div className={`flex-center gap-4 ${roboto_regular.className}`}>

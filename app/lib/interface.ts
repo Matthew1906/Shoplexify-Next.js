@@ -28,8 +28,25 @@ export interface Product {
     num_sold: number,
 }
 
-export interface productResponse {
+export interface productsResponse {
     page?: number,
     length?: number,
     data?: Array<Product>
+}
+
+export interface Review {
+    user: string,
+    rating: number,
+    review: string
+}
+
+export interface productResponse extends Product {
+    description?: string,
+    stock?: number,
+    reviews?: Array<Review>,
+}
+
+export interface cartResponse extends Product {
+    quantity: number,
+    rated_by?: number
 }

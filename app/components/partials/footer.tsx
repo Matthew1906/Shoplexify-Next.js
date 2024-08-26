@@ -1,6 +1,6 @@
 'use client'
 
-import { roboto_semibold } from "@/app/_lib/font";
+import { roboto_semibold } from "@/app/lib/font";
 
 const Footer = ()=>{
     // mt-auto is a temporary alternative, should look into this later

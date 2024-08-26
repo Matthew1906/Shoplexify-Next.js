@@ -1,7 +1,6 @@
 'use server'
 
-import prisma from "@/app/_lib/prisma";
-import { revalidatePath } from "next/cache";
+import prisma from "@/app/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest){
@@ -117,7 +116,6 @@ export async function GET(req:NextRequest){
                 avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length)
             }
         })
-        revalidatePath('/products')
         // const ratings = searchParams.get('rating')?.split(",").map(rating=>parseInt(rating))??[];
         return NextResponse.json({
             page:page,

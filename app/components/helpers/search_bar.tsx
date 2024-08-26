@@ -1,7 +1,7 @@
 'use client'
 
-import { roboto_regular } from "@/app/_lib/font";
-import { getCategories } from "@/app/_services/categories";
+import { roboto_regular } from "@/app/lib/font";
+import { getCategories } from "@/app/services/categories";
 import { categories } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
@@ -39,7 +39,7 @@ const SearchBar = ()=>{
         router.push(`/products?${params}`);
         router.refresh();
     }
-    return <form ref={formRef} onSubmit={handleSubmit} className={`mx-2 w-full flex justify-center ${roboto_regular.className}`}>
+    return <form ref={formRef} method='GET' onSubmit={handleSubmit} className={`mx-2 w-full flex justify-center ${roboto_regular.className}`}>
         <select name="category" id="category" defaultValue="" className="p-2 outline-none rounded-l-md border-r-2 border-navy-blue">
             <option className="p-2 rounded-none" key={0} value={""}></option>
             {categories && categories.map(category=>{

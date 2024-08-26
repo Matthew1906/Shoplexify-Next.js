@@ -1,6 +1,6 @@
 'use client'
 
-import { roboto_semibold } from "@/app/_lib/font";
+import { roboto_semibold } from "@/app/lib/font";
 
 const TextButton = (
     {theme='primary', text, isForm=false, onClick } : {theme?:string, text:string, isForm?:boolean, onClick?: ()=>void}

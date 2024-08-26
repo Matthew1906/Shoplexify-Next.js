@@ -1,6 +1,6 @@
 'use client'
 
-import SortBy from "@/app/_components/helpers/sort_by";
+import SortBy from "@/app/components/helpers/sort_by";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -19,7 +19,7 @@ const PaginationHeader = ({page, total}:{page:number, total:number})=>{
         <div className="flex justify-between items-center text-xl">
             <h4>Showing {" "}
                 <span className="font-bold">
-                    {total%10==0?total:`${total-(total%10)}+`}
+                    {total%10==0||total<10?total:`${total-(total%10)}+`}
                 </span>
                 {" "} products {" "}
                 <span className="font-semibold">
@@ -27,9 +27,13 @@ const PaginationHeader = ({page, total}:{page:number, total:number})=>{
                 </span>
                 {" "} - {" "}
                 <span className="font-semibold">
-                { page*pageLength<=total?page*pageLength:total }
-                </span> out of <span className="font-semibold">{total})</span>
-                </h4>
+                    {page*pageLength<=total?page*pageLength:total}
+                </span> 
+                {" "} out of {" "} 
+                <span className="font-semibold">
+                    {total})
+                </span>
+            </h4>
             <SortBy />
         </div>
     )

@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from "next-auth/react";
-import { Header } from "@/app/_components/partials";
+import { Header } from "@/app/components/partials";
 
 export default function RootLayout(
     { children }:

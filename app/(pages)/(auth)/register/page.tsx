@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { TextButton } from "@/app/_components/utils";
-import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/_lib/font";
-import { authResponse } from "@/app/_lib/interface";
+import { TextButton } from "@/app/components/utils";
+import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/lib/font";
+import { authResponse } from "@/app/lib/interface";
 
 export default function Register(){
     const [ errorStatus, setErrorStatus ] = useState<authResponse>();

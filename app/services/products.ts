@@ -1,8 +1,9 @@
 'use server'
 
-import { productResponse, searchParams } from "../_lib/interface";
+import { revalidatePath } from "next/cache";
+import { Product, productResponse, productsResponse, searchParams } from "../lib/interface";
 
-export const getProducts = async(searchParams: searchParams|null): Promise<productResponse|undefined>=>{
+export const getProducts = async(searchParams: searchParams|null): Promise<productsResponse|undefined>=>{
     try {
         const editableParams = new URLSearchParams();
         if(searchParams?.query){
@@ -32,5 +33,16 @@ export const getProducts = async(searchParams: searchParams|null): Promise<produ
         return jsonResponse;
     } catch(error){
         console.log(error)
+    }
+}
+
+export const getProduct = async(slug:string):Promise<productResponse|undefined> =>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/products/${slug}`;
+        const response = await fetch(url, {method:'GET'});
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
     }
 }

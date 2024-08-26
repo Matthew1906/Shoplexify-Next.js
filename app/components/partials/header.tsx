@@ -24,7 +24,7 @@ const Header = (
                     </div>
                   : <div className="flex flex-grow items-center gap-2">
                         <SearchBar/>
-                        <MenuIcon link='#' Icon={MdShoppingCart}/>
+                        <MenuIcon link='/cart' Icon={MdShoppingCart}/>
                         { isLoggedIn && <MenuIcon link="#" Icon={MdNotifications}/> }
                     </div>
                 }
