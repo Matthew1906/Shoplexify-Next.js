@@ -12,7 +12,7 @@ export default async function CartPage(){
         <section className="col-span-5">
             <h2 className={`${roboto_bold.className} text-3xl mb-4`}>Cart</h2>
             {cartContents?.map((cartItem:cartResponse)=>{
-                return <CartItem item={cartItem} />
+                return <CartItem key={cartItem.slug} item={cartItem} />
             })}
         </section>
         <section className="col-span-2">
