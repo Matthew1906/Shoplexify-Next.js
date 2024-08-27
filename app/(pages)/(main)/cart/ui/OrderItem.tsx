@@ -1,10 +1,10 @@
-import { roboto_light, roboto_regular, roboto_semibold } from "@/app/lib/font";
-import { cartResponse } from "@/app/lib/interface";
+import { roboto_light, roboto_semibold } from "@/app/lib/font";
+import { orderResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import Image from "next/image";
 import { MdStar } from "react-icons/md";
 
-const CartItem = ({item}:{item:cartResponse})=>{
+const CartItem = ({item}:{item:orderResponse})=>{
     return <div className="flex">
          <Image 
             src={item?.image_url}

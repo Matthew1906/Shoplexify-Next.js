@@ -6,7 +6,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { TextButton } from "@/app/components/utils";
 import { useSession } from "next-auth/react";
-import { addToCart, getCartItem } from "@/app/services/cart";
+import { createOrder, getOrder } from "@/app/services/orders";
 import { useRouter } from "next/navigation";
 
 const CartSection = ({type, product, stock, price}:{type:string, product:string, stock:number, price:number})=>{
@@ -26,14 +26,14 @@ const CartSection = ({type, product, stock, price}:{type:string, product:string,
     }
     const session = useSession();
     useEffect(()=>{
-        getCartItem(product).then((res)=>{
+        getOrder(product).then((res)=>{
             if(res.status){
                 setInitialQuantity(res.quantity);
                 setOrderQuantity(res.quantity);
             }
         })
     }, [isChanged]);
-    const submitCart = ()=>addToCart(product, orderQuantity).then(()=>{
+    const submitCart = ()=>createOrder(product, orderQuantity).then(()=>{
         setIsChanged(!isChanged);
         router.refresh()
         alert("Product has been added to cart!");

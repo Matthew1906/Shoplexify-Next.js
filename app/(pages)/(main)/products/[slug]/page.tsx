@@ -6,7 +6,7 @@ import { roboto_light, roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { productResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import { getProduct } from "@/app/services/products";
-import CartSection from "./ui/CartSection";
+import OrderSection from "./ui/OrderSection";
 import { TextButton } from "@/app/components/utils";
 import ReviewItem from "./ui/ReviewItem";
 
@@ -39,7 +39,7 @@ export default async function ProductPage(
                         {product.description}
                     </p>
                 </div>
-                { session && <CartSection 
+                { session && <OrderSection 
                     type="product" product={product?.slug} 
                     stock={product?.stock??0} price={product.price}
                 /> }

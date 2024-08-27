@@ -46,7 +46,7 @@ export interface productResponse extends Product {
     reviews?: Array<Review>,
 }
 
-export interface cartResponse extends Product {
+export interface orderResponse extends Product {
     quantity: number,
     rated_by?: number
 }

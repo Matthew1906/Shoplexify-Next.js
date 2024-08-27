@@ -1,7 +1,6 @@
 'use server'
 
-import { revalidatePath } from "next/cache";
-import { Product, productResponse, productsResponse, searchParams } from "../lib/interface";
+import { productResponse, productsResponse, searchParams } from "../lib/interface";
 
 export const getProducts = async(searchParams: searchParams|null): Promise<productsResponse|undefined>=>{
     try {
