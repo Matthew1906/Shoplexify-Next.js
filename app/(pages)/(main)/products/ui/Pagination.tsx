@@ -5,9 +5,7 @@ import PaginationHeader from "./PaginationHeader";
 import PaginationBar from "./PaginationBar";
 import ProductCard from "./ProductCard";
 
-const Pagination = (
-    {products}:{products:productsResponse|undefined}
-)=>{
+const Pagination = ({products}:{products:productsResponse|undefined})=>{
     return (
         <>
             <PaginationHeader total={products?.length??0} page={products?.page??0}/>

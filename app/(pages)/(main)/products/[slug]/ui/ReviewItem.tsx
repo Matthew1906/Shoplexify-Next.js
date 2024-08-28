@@ -1,7 +1,6 @@
 import { roboto_semibold } from "@/app/lib/font"
 import { MdStar } from "react-icons/md"
 
-
 const ReviewItem = ({name, rating, body}:{name:string, rating:number, body:string})=>{
     return <div className="flex flex-col items-start justify-center gap-2">
         <div className="flex gap-2">

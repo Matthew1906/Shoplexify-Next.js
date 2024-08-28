@@ -3,12 +3,9 @@ import { Suspense } from "react";
 import { productsResponse, searchParams } from "@/app/lib/interface";
 import { getCategories } from "@/app/services/categories";
 import { getProducts } from "@/app/services/products"
-import FilterForm from "./ui/FilterForm";
-import Pagination from "./ui/Pagination";
+import { FilterForm, Pagination } from "./ui";
 
-export default async function Page(
-    {searchParams}:{searchParams?:searchParams}
-){  
+export default async function Page({searchParams}:{searchParams?:searchParams}){  
     const categories: Array<categories> | undefined = await getCategories();
     const productData: productsResponse | undefined = await getProducts(searchParams??null);
     return <main className="grid grid-cols-7 gap-5 p-10">

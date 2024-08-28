@@ -48,5 +48,15 @@ export interface productResponse extends Product {
 
 export interface orderResponse extends Product {
     quantity: number,
-    rated_by?: number
+    rated_by?: number,
+    stock?: number
+}
+
+export interface coordinates {
+    lat: number,
+    lng: number
+}
+
+export interface address extends coordinates {
+    address?: string
 }

@@ -6,16 +6,14 @@ import { roboto_light, roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { productResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import { getProduct } from "@/app/services/products";
-import OrderSection from "./ui/OrderSection";
-import { TextButton } from "@/app/components/utils";
-import ReviewItem from "./ui/ReviewItem";
+import OrderSection from "@/app/components/OrderSection";
+import { ReviewButton, ReviewItem } from "./ui";
 
 export default async function ProductPage( 
     {params}:{params:{slug:string}}
 ){
     const product: productResponse | undefined = await getProduct(params.slug);
     const session = await getServerSession();
-    const addReview = ()=>{};
     return <main className={`${roboto_regular.className} px-10 py-5`}>
         <Suspense fallback={"Loading..."}>
             { product && <>
@@ -25,7 +23,6 @@ export default async function ProductPage(
                     alt={product?.slug}
                     width={350}
                     height={350}
-                    // objectFit="cover"
                 />
                 <div className="pt-2 pb-4 col-span-3 flex flex-col items-start gap-5">
                     <b className={`block mt-2 ${roboto_light.className} text-3xl`}>{product.name}</b>
@@ -39,8 +36,7 @@ export default async function ProductPage(
                         {product.description}
                     </p>
                 </div>
-                { session && <OrderSection 
-                    type="product" product={product?.slug} 
+                { session && <OrderSection product={product?.slug} 
                     stock={product?.stock??0} price={product.price}
                 /> }
             </section>
@@ -48,7 +44,8 @@ export default async function ProductPage(
                 <section id="product-reviews" className="mt-10 border-t-2 border-b-2 border-navy-blue py-10">
                     <div className="flex items-center gap-5 mb-5">
                         <p className={`${roboto_semibold.className} text-xl`}>Reviews:</p>
-                        { session && <TextButton text="Add Review" onClick={addReview}/> } 
+                        { session && <ReviewButton /> }
+                        {/* Convert this to a component later */}
                     </div>
                     <div className="px-2 text-lg">
                         {product.reviews?.map((review)=>{

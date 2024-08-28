@@ -20,6 +20,7 @@ export async function GET(req: NextRequest){
                             slug:true,
                             name:true, 
                             price:true,
+                            stock:true,
                             image_url:true,
                             transaction_details:{
                                 select:{
@@ -43,6 +44,7 @@ export async function GET(req: NextRequest){
                     name:order.products.name, 
                     price:order.products.price,
                     quantity: order.quantity,
+                    stock: order.products.stock,
                     image_url:order.products.image_url,
                     num_sold: quantities.reduce((a,b)=>a+b, 0),
                     avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length),
@@ -51,7 +53,43 @@ export async function GET(req: NextRequest){
             })
             return Response.json({ data: orders })
         }
-        return Response.json({ status:true });
+        return Response.json({ status:false });
+    } catch(error){
+        console.log(error);
+    }
+}
+
+export async function DELETE(req: NextRequest){
+    try {
+        const sessionData = await getServerSession();
+        if(sessionData?.user?.email){
+            const user = await prisma.users.findFirst({
+                where:{email:sessionData.user.email}
+            })
+            if(!user){
+                return Response.json({ status:false });
+            }
+            const orders = await prisma.orders.findMany({
+                where:{
+                    user_id:user?.id
+                }
+            })
+            await Promise.all(
+                orders.map(async order=>{
+                    await prisma.products.update({
+                        where:{id:order.product_id},
+                        data:{stock:{increment:order.quantity}}
+                    })
+                })
+            );
+            await prisma.orders.deleteMany({
+                where:{
+                    user_id:user?.id
+                }
+            })
+            return Response.json({ status:true });
+        }
+        return Response.json({ status:false });
     } catch(error){
         console.log(error);
     }

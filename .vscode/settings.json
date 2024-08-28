@@ -11,6 +11,9 @@
         "migrations":"Mappings",
         "users":"Controller",
         "login":"Secure",
-        "categories":"Constant"
+        "categories":"Constant",
+        "[slug]":"Context",
+        "[id]":"Context",
+        "[...nextauth]":"Admin"
     }
 }

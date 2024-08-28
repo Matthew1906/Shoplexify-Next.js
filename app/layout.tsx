@@ -16,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col justify-stretch min-h-screen">
-        <Providers>{children}</Providers> 
+        <Providers>
+            {children} 
+        </Providers> 
         <Footer/>
       </body>
     </html>

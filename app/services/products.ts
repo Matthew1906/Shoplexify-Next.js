@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from "next/cache";
 import { productResponse, productsResponse, searchParams } from "../lib/interface";
 
 export const getProducts = async(searchParams: searchParams|null): Promise<productsResponse|undefined>=>{
@@ -40,6 +41,7 @@ export const getProduct = async(slug:string):Promise<productResponse|undefined> 
         const url = `${process.env.SERVER_URL}/api/products/${slug}`;
         const response = await fetch(url, {method:'GET'});
         const jsonResponse = await response.json();
+        revalidatePath(`/products/${slug}`)
         return jsonResponse;
     } catch(error) {
         console.log(error);
