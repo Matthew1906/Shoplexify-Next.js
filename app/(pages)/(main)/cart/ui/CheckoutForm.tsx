@@ -2,10 +2,12 @@
 
 import { address, orderResponse } from "@/app/lib/interface";
 import { currencyString } from "@/app/lib/string";
-import { useMemo, useState } from "react";
-import AddressMap from "./AddressMap";
+import { FormEvent, useMemo, useState } from "react";
+import AddressMap from "@/app/components/AddressMap";
 import { TextButton } from "@/app/components/utils";
 import SelectAddressModal from "./SelectAddressModal";
+import { checkoutOrders } from "@/app/services/orders";
+import { useRouter } from "next/navigation";
 
 const CheckoutForm = ({orders}:{orders:Array<orderResponse>|undefined})=>{
     const totalPrice = useMemo(()=>{
@@ -27,8 +29,23 @@ const CheckoutForm = ({orders}:{orders:Array<orderResponse>|undefined})=>{
     const deliveryFee = useMemo(()=>{
         return Math.floor(Math.abs(address.lat) * Math.abs(address.lng) * 25);
     }, [address])
+    const router = useRouter();
+    const checkout = (event: FormEvent<HTMLFormElement>)=>{
+        event.preventDefault();
+        const formData = new FormData();
+        formData.set('address', address.address??"");
+        formData.set('deliveryFee', deliveryFee.toString());
+        checkoutOrders(formData).then((res)=>{
+            if(res.status) {
+                router.push('/transactions/'+ res.transactionId);
+            } else {
+                router.refresh();
+            }
+            
+        })
+    }
     return <section className="col-span-3 p-8">
-        <form className="border-2 border-navy-blue rounded-lg p-5">
+        <form className="border-2 border-navy-blue rounded-lg p-5" onSubmit={checkout}>
             <section>
                 <h4 className="text-2xl font-semibold mb-5">Location</h4>
                 <AddressMap coordinate={address}/>
@@ -46,7 +63,7 @@ const CheckoutForm = ({orders}:{orders:Array<orderResponse>|undefined})=>{
                 <p className="text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
             </section>
             <div className="flex-center mt-5">
-                <TextButton text="Checkout" theme="secondary"/>
+                <TextButton text="Checkout" theme="secondary" isForm/>
             </div>
         </form>
     </section>

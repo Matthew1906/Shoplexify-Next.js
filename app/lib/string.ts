@@ -24,3 +24,11 @@ export const popularityString = (num:number): string =>{
         return "1B+"
     }
 }
+
+const dateFormat = Intl.DateTimeFormat( 'id-ID', {
+    dateStyle:'full'
+})
+
+export const dateString = (date:Date): string =>{
+    return dateFormat.format(date);
+}

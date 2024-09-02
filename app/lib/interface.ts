@@ -60,3 +60,29 @@ export interface coordinates {
 export interface address extends coordinates {
     address?: string
 }
+
+export interface geolocationResponse {
+    formatted_address: string,
+    geometry: {
+        location:{
+            lat:number,
+            lng:number
+        }
+    }
+}
+
+export interface transactionHistoryDetails extends Product{
+    quantity: number,
+    rated_by?: number,
+}
+
+export interface transactionHistoryResponse {
+    id:number,
+    date: Date,
+    address: string,
+    delivery_cost: number,
+    delivery_status: string,
+    payment_method: string,
+    payment_status: string,
+    details: Array<transactionHistoryDetails>
+}

@@ -1,20 +1,10 @@
 import BaseModal from "@/app/components/BaseModal"
-import AddressMap from "./AddressMap"
+import AddressMap from "@/app/components/AddressMap"
 import { MdSearch } from "react-icons/md";
-import { address } from "@/app/lib/interface";
+import { address, geolocationResponse } from "@/app/lib/interface";
 import { KeyboardEvent, useState } from "react";
 import { roboto_semibold } from "@/app/lib/font";
 import { TextButton } from "@/app/components/utils";
-
-interface geolocationResponse {
-    formatted_address: string,
-    geometry: {
-        location:{
-            lat:number,
-            lng:number
-        }
-    }
-}
 
 const SelectAddressModal = (
     { show, onHideModal, saveAddress } : 

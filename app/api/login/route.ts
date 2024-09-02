@@ -1,3 +1,5 @@
+'use server'
+
 import { z } from 'zod';
 import { comparePassword } from '@/app/lib/auth';
 import prisma from '@/app/lib/prisma';

@@ -2,12 +2,29 @@
 
 import { headers } from "next/headers";
 import { orderResponse } from "../lib/interface";
+import { revalidatePath } from "next/cache";
+import { OutgoingHttpHeader } from "http";
+import { OutgoingHttpHeaders } from "http2";
 
 export const getOrders = async():Promise<Array<orderResponse>|undefined>=>{
     const url = `${process.env.SERVER_URL}/api/cart`;
     const response = await fetch(url, { method: 'GET', headers:headers() });
     const jsonResponse = await response.json();
     return jsonResponse.data;
+}
+
+export const checkoutOrders = async(formData: FormData)=>{
+    const url = `${process.env.SERVER_URL}/api/cart`;
+    const cookieHeader = new Headers();
+    const cookies = headers().get("cookie")??"";
+    cookieHeader.set("cookie", cookies);
+    const response = await fetch(url, { 
+        method:'POST', 
+        headers:cookieHeader, 
+        body: formData
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
 }
 
 export const deleteOrders = async()=>{
