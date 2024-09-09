@@ -2,8 +2,8 @@ import { roboto_bold, roboto_regular } from "@/app/lib/font";
 import { transactionHistoryDetails, transactionHistoryResponse } from "@/app/lib/interface";
 import { getTransactionHistory } from "@/app/services/transactions";
 import { dateString } from "@/app/lib/string";
-import TransactionItem from "./ui/TransactionItem";
-import TransactionSummary from "./ui/TransactionSummary";
+import { TransactionItem, TransactionSummary } from "./ui";
+
 
 export default async function TransactionHistoryPage({params}:{params:{id:number}}){
     const id = params.id;
@@ -19,6 +19,11 @@ export default async function TransactionHistoryPage({params}:{params:{id:number
                 return <TransactionItem key={cartItem.slug} item={cartItem} />
             })}
         </section>
-        <TransactionSummary details={transactionHistory?.details} deliveryFee={transactionHistory?.delivery_cost} addressString={transactionHistory?.address}/>
+        <TransactionSummary 
+            details={transactionHistory?.details} 
+            deliveryFee={transactionHistory?.delivery_cost} 
+            addressString={transactionHistory?.address}
+            status={transactionHistory?.transaction_status}
+        />
     </main>
 }

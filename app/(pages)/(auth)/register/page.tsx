@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { TextButton } from "@/app/components/utils";
+import { TextButton } from "@/app/components/buttons";
 import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { authResponse } from "@/app/lib/interface";
 

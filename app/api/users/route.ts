@@ -1,18 +1,9 @@
+'use server'
+
 import { z } from 'zod';
 import prisma from '@/app/lib/prisma';
-import { authOptions, generatePassword } from '@/app/lib/auth';
+import { comparePassword, generatePassword } from '@/app/lib/auth';
 import { getServerSession } from 'next-auth';
-import { NextRequest } from 'next/server';
-
-export async function GET(req: NextRequest){
-    try {
-        const session = await getServerSession(authOptions);
-        console.log(session);
-        return Response.json({status:true});
-    } catch(error) {
-        console.log(error);
-    }
-}
 
 export async function POST(req:Request){
     try {
@@ -48,6 +39,52 @@ export async function POST(req:Request){
             return Response.json({status:false, error:parsedCredentials.error.flatten().fieldErrors});
         }
     } catch (error){
-        console.log(error);
+        return Response.json({status:false})
+    }
+}
+
+export async function PATCH(req:Request){
+    try {
+        const formData = await req.formData();
+        const dob = new Date(formData.get("dob")?.toString()??"");
+        const password = formData.get("password");
+        const confirmPassword = formData.get("confirmPassword");
+        const parsedCredentials = z.object({
+            dob:z.date()
+                .min(new Date("1900-01-01"), { message: "Too old" })
+                .max(new Date("2014-01-01"), { message: "Too young" }),
+            password: z.string().min(5),
+            confirmPassword: z.string().min(5)
+        }).safeParse({dob, password, confirmPassword});
+        if(parsedCredentials.success){
+            if (parsedCredentials.data.password != parsedCredentials.data.confirmPassword){
+                return Response.json({status:false, error:{confirmPassword:"Confirm password doesnt match with the password!"}});
+            }
+            const sessionData = await getServerSession();
+            if(sessionData?.user?.email){
+                const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
+                if(!user){
+                    return Response.json({status:false, message:"Account doesn't exists!"})
+                }
+                const isSamePassword = await comparePassword(parsedCredentials.data.password, user.password);
+                if(isSamePassword){
+                    return Response.json({status:false, error:{password:"This is your old password!"}});
+                }
+                const newPassword = await generatePassword(parsedCredentials.data.password); 
+                await prisma.users.update({
+                    where:{id:user.id},
+                    data:{
+                        dob: parsedCredentials.data.dob,
+                        password: String(newPassword),
+                    }
+                })
+                return Response.json({status:true})
+            }
+            return Response.json({status:false, message:"Account doesn't exists!"})
+        } else if (parsedCredentials.error){
+            return Response.json({status:false, error:parsedCredentials.error.flatten().fieldErrors});
+        }
+    } catch (error){
+        return Response.json({status:false, message:error})
     }
 }

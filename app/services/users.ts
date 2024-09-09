@@ -2,12 +2,19 @@
 
 import { headers } from "next/headers";
 
-export const getUser = async()=>{
+export const updateProfile = async(formData:FormData)=>{
     try {
         const url = `${process.env.SERVER_URL}/api/users`;
-        const response = await fetch(url, {method:'GET', headers:headers()});
-        const jsonResponse = await response.json();
-        return jsonResponse;
+        const cookieHeader = new Headers();
+        const cookies = headers().get("cookie")??"";
+        cookieHeader.set("cookie", cookies);
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: cookieHeader,
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
     } catch(error) {
         console.log(error);
     }

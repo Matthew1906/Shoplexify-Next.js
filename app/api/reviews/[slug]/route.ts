@@ -2,7 +2,6 @@
 
 import prisma from "@/app/lib/prisma"
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server"
 
 export async function GET(req:NextRequest, {params}:{params:{slug:string}}){

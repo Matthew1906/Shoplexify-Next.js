@@ -2,12 +2,12 @@
 const nextConfig = {
     images: {
         remotePatterns: [
-          // {
-          //   protocol: 'https',
-          //   hostname: 'randomuser.me',
-          //   port: '',
-          //   pathname: '/api/portraits/**',
-          // },
+          {
+            protocol: 'https',
+            hostname: 'ui-avatars.com',
+            port: '',
+            pathname: '/api/**',
+          },
           {
             protocol: 'https',
             hostname: 'ik.imagekit.io',

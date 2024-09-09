@@ -68,7 +68,7 @@ export const authOptions:NextAuthOptions = {
             session.name  = token.name??"Jane Doe";
             session.role = token.role??"user";
             session.email = token.email??"janedoe@gmail.com";
-            session.dob = token.dob??"2022/12/12";
+            session.dob = token.dob??"None";
             session.id = parseInt(token.id??"-1");
             return session;
         }, 
@@ -77,10 +77,10 @@ export const authOptions:NextAuthOptions = {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
-                token.role = parseInt(user.id??"0") == 1 ?"admin":'user'}
-                token.dob = (user?.dob??"None").toString()
-                return token;
+                token.role = parseInt(user.id??"0") == 1 ?"admin":'user';
+                token.dob = user.dob??"None"
             }
+            return token;
         },      
-        
+    }
     }

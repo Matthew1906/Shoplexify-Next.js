@@ -73,6 +73,13 @@ export interface geolocationResponse {
     }
 }
 
+export interface transactionResponse {
+    id: number,
+    date: Date,
+    status: string,
+    total_price: number
+}
+
 export interface transactionHistoryDetails extends Product{
     quantity: number,
     rated_by?: number,
@@ -83,9 +90,7 @@ export interface transactionHistoryResponse {
     date: Date,
     address: string,
     delivery_cost: number,
-    delivery_status: string,
-    payment_method: string,
-    payment_status: string,
+    transaction_status: string
     details: Array<transactionHistoryDetails>
 }
 
@@ -93,4 +98,14 @@ export interface reviewResponse {
     status: boolean,
     review: reviews,
     hasPurchased: boolean
+}
+
+export interface profileResponse {
+    status: boolean
+    message?:string
+    error?: {
+        dob?:string,
+        password?:string
+        confirmPassword?:string
+    }
 }

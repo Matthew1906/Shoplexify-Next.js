@@ -2,14 +2,14 @@
 
 import { currencyString } from "@/app/lib/string"
 import AddressMap from "@/app/components/AddressMap"
-import { TextButton } from "@/app/components/utils"
+import { TextButton } from "@/app/components/buttons"
 import { useEffect, useMemo, useState } from "react"
 import { address, transactionHistoryDetails, geolocationResponse } from "@/app/lib/interface"
 import { useRouter } from "next/navigation"
 
 const TransactionSummary = (
-    {addressString="", deliveryFee=0, details=[]} : 
-    {addressString?:string, deliveryFee?: number, details?:Array<transactionHistoryDetails>}
+    {addressString="", deliveryFee=0, details=[], status=""} : 
+    {addressString?:string, deliveryFee?: number, details?:Array<transactionHistoryDetails>, status?:string}
 )=>{
     const router = useRouter();
     const totalPrice = useMemo(()=>{
@@ -38,6 +38,13 @@ const TransactionSummary = (
                 }
             ))
     }, [addressString])
+    const theme = useMemo(()=>{
+        if(status == 'Unpaid') {
+            return 'bg-red'
+        } else if (status == 'On Process') {
+            return 'bg-yellow'
+        } else return 'bg-green'
+    }, [status]);
     return <section className="col-span-3 p-8">
         <div className="border-2 border-navy-blue rounded-lg p-5">
             <section>
@@ -51,6 +58,10 @@ const TransactionSummary = (
                 <p className="text-xl mb-2"><span>Delivery Fee:</span> <strong>{currencyString(deliveryFee)}</strong></p>
                 <hr className="h-5 border-navy-blue"/>
                 <p className="text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
+            </section>
+            <section className="mt-4 flex items-center gap-3">
+                <h4 className="text-2xl font-semibold">Status: </h4>
+                <div className={`p-2 rounded-lg text-white font-semibold ${theme}`}>{status}</div>
             </section>
             <div className="flex-center mt-5">
                 <TextButton text="Go Back" theme="secondary" onClick={()=>router.back()}/>

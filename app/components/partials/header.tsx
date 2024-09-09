@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { LogoIcon, MenuIcon } from "../icons";
-import { IconButton, TextButton } from "../utils";
+import { IconButton, TextButton } from "../buttons";
 import { MdFace, MdNotifications, MdOutlineInsertChart, MdOutlineWarehouse, MdShoppingCart } from "react-icons/md";
 import { signOut } from "next-auth/react";
 import { SearchBar } from "../helpers";
@@ -16,7 +16,8 @@ const Header = (
             <LogoIcon/>
             { !isAuth &&  
                 <> { isLoggedIn && isAdmin // admin login 
-                  ? <div className="flex items-center gap-2">
+                  ? <div className="flex flex-grow items-center gap-2">
+                        <SearchBar/>
                         {/* Dashboard Menu */}
                         <MenuIcon link='#' Icon={MdOutlineInsertChart}/>
                         {/* Stocks Menu */}

@@ -6,6 +6,6 @@ export const config = {
         '/cart',
         '/profile',
         '/transactions',
-        '/transactions/:id',
+        '/transactions/:id*',
     ],
 }

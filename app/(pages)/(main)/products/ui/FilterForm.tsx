@@ -1,13 +1,13 @@
 'use client'
 
-import { TextButton } from "@/app/components/utils"
+import { TextButton } from "@/app/components/buttons"
 import { roboto_bold, roboto_semibold } from "@/app/lib/font"
 import { categories } from "@prisma/client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FormEvent, useState } from "react"
 // import { MdStar } from "react-icons/md"
 
-const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
+const FilterForm = ({categories, isAdmin}:{categories:Array<categories>|undefined, isAdmin:boolean})=>{
     // Validate number input
     const [ priceRangeError, setPriceRangeError ] = useState<string|null>(null);
     // Manage path
@@ -56,8 +56,14 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     const resetParams = ()=>{
         router.replace(pathname);
     }
+    console.log(isAdmin)
     return (
         <form onSubmit={handleSubmit} method='GET' className="col-span-2 flex flex-col items-start">
+            { isAdmin && 
+                <><div className="flex self-stretch mb-4">
+                    <TextButton text='Add Product' onClick={()=>{}} className="flex-grow"/>
+                </div></>
+            }
             <div className="flex flex-col items-start mb-5">
                 <h3 className={`${roboto_bold.className} text-xl mb-2`}>Categories:</h3>
                 {categories && categories.map((category:categories)=>{

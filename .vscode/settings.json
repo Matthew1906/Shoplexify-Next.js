@@ -14,6 +14,7 @@
         "categories":"Constant",
         "[slug]":"Context",
         "[id]":"Context",
-        "[...nextauth]":"Admin"
+        "[...nextauth]":"Admin",
+        "buttons":"Utils"
     }
 }

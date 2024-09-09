@@ -7,15 +7,17 @@ import { productResponse, reviewResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import { getProduct } from "@/app/services/products";
 import OrderSection from "@/app/components/OrderSection";
-import { ReviewButton, ReviewItem } from "./ui";
+import { ReviewButton, ReviewItem, UpdateProductButton } from "./ui";
 import { getReview } from "@/app/services/reviews";
+import { authOptions } from "@/app/lib/auth";
+import { TextButton } from "@/app/components/buttons";
 
 export default async function ProductPage( 
     {params}:{params:{slug:string}}
 ){
     const product: productResponse | undefined = await getProduct(params.slug);
     const review: reviewResponse | undefined = await getReview(params.slug);
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     return <main className={`${roboto_regular.className} px-10 py-5`}>
         <Suspense fallback={"Loading..."}>
             { product && <>
@@ -38,9 +40,13 @@ export default async function ProductPage(
                         {product.description}
                     </p>
                 </div>
+                <div className="">
                 { session && <OrderSection product={product?.slug} 
                     stock={product?.stock??0} price={product.price}
                 /> }
+                { session?.role == 'admin' && <UpdateProductButton /> }
+                </div>
+                
             </section>
             { ((product.reviews?.length??0) > 0 || (review?.status && review.hasPurchased))  &&
                 <section id="product-reviews" className="mt-10 border-t-2 border-b-2 border-navy-blue py-10">

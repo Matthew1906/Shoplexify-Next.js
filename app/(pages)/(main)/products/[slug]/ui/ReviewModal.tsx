@@ -1,7 +1,7 @@
 import BaseModal from "@/app/components/BaseModal"
 import { FormEvent, useState } from "react";
 import { roboto_semibold } from "@/app/lib/font";
-import { TextButton } from "@/app/components/utils";
+import { TextButton } from "@/app/components/buttons";
 import { reviews } from "@prisma/client";
 import RatingInput from "./RatingInput";
 import { createReview } from "@/app/services/reviews";

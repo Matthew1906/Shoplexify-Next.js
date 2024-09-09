@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import { TextButton } from "@/app/components/utils"
+import { TextButton } from "@/app/components/buttons"
 import { deleteOrders } from "@/app/services/orders";
 
 const ClearCartButton = ()=>{

@@ -4,7 +4,7 @@ import { address, orderResponse } from "@/app/lib/interface";
 import { currencyString } from "@/app/lib/string";
 import { FormEvent, useMemo, useState } from "react";
 import AddressMap from "@/app/components/AddressMap";
-import { TextButton } from "@/app/components/utils";
+import { TextButton } from "@/app/components/buttons";
 import SelectAddressModal from "./SelectAddressModal";
 import { checkoutOrders } from "@/app/services/orders";
 import { useRouter } from "next/navigation";

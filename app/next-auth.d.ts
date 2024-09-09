@@ -10,26 +10,26 @@ declare module "next-auth" {
     name: string
     email: string
     role: string,
-    dob?: string
+    dob: string
   }
 
   interface User {
-    id?: string;
-    dob?: string
+    id: string;
+    dob: string
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id?: string;
-    role?: string;
-    dob?: string;
+    id: string;
+    role: string;
+    dob: string;
   }
 }
 
 declare module "next-auth/adapters" {
   interface AdapterUser {
-    id?: string;
-    dob?: string
+    id: string;
+    dob: string
   }
 }

@@ -4,7 +4,7 @@ import { MdSearch } from "react-icons/md";
 import { address, geolocationResponse } from "@/app/lib/interface";
 import { KeyboardEvent, useState } from "react";
 import { roboto_semibold } from "@/app/lib/font";
-import { TextButton } from "@/app/components/utils";
+import { TextButton } from "@/app/components/buttons";
 
 const SelectAddressModal = (
     { show, onHideModal, saveAddress } : 

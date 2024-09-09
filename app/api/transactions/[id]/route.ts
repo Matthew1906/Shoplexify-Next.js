@@ -66,6 +66,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             })
             return Response.json({
                 ...transactionHistory,
+                transaction_status: transactionHistory.payment_status == 'Unpaid' 
+                ? 'Unpaid' 
+                : transactionHistory.payment_status == 'Paid' && transactionHistory.delivery_status == 'Unsent' 
+                ? 'On Process' 
+                : 'Delivered',
                 details: processedDetails
             })
         }

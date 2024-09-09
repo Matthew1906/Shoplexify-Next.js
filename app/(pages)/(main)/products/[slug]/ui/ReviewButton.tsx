@@ -1,6 +1,6 @@
 'use client'
 
-import { TextButton } from "@/app/components/utils";
+import { TextButton } from "@/app/components/buttons";
 import { useState } from "react";
 import ReviewModal from "./ReviewModal";
 import { reviews } from "@prisma/client";
