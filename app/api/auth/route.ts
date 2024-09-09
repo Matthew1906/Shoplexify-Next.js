@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-import { authOptions } from "./[...nextauth]/route";
+import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "@/app/lib/auth";
 
-export async function GET(request){
+export async function GET(request:NextRequest){
     const session = await getServerSession(authOptions);
     return NextResponse.json({authenticated:!!session, ...session});
 }

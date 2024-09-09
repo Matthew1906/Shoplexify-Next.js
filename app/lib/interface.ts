@@ -1,3 +1,5 @@
+import { reviews } from "@prisma/client"
+
 export interface authResponse {
     status: boolean
     message?:string
@@ -85,4 +87,10 @@ export interface transactionHistoryResponse {
     payment_method: string,
     payment_status: string,
     details: Array<transactionHistoryDetails>
+}
+
+export interface reviewResponse {
+    status: boolean,
+    review: reviews,
+    hasPurchased: boolean
 }

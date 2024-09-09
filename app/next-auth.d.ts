@@ -1,4 +1,5 @@
 import NextAuth from "next-auth"
+import { DateTime } from "next-auth/providers/kakao"
 
 declare module "next-auth" {
   /**
@@ -8,6 +9,27 @@ declare module "next-auth" {
     id: number
     name: string
     email: string
-    role: string
+    role: string,
+    dob?: string
+  }
+
+  interface User {
+    id?: string;
+    dob?: string
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
+    role?: string;
+    dob?: string;
+  }
+}
+
+declare module "next-auth/adapters" {
+  interface AdapterUser {
+    id?: string;
+    dob?: string
   }
 }

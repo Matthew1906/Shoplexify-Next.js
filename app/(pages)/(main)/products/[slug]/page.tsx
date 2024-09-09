@@ -3,16 +3,18 @@ import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import { MdStar } from "react-icons/md";
 import { roboto_light, roboto_regular, roboto_semibold } from "@/app/lib/font";
-import { productResponse } from "@/app/lib/interface";
+import { productResponse, reviewResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import { getProduct } from "@/app/services/products";
 import OrderSection from "@/app/components/OrderSection";
 import { ReviewButton, ReviewItem } from "./ui";
+import { getReview } from "@/app/services/reviews";
 
 export default async function ProductPage( 
     {params}:{params:{slug:string}}
 ){
     const product: productResponse | undefined = await getProduct(params.slug);
+    const review: reviewResponse | undefined = await getReview(params.slug);
     const session = await getServerSession();
     return <main className={`${roboto_regular.className} px-10 py-5`}>
         <Suspense fallback={"Loading..."}>
@@ -40,12 +42,11 @@ export default async function ProductPage(
                     stock={product?.stock??0} price={product.price}
                 /> }
             </section>
-            { (product.reviews?.length??0) > 0 &&
+            { ((product.reviews?.length??0) > 0 || (review?.status && review.hasPurchased))  &&
                 <section id="product-reviews" className="mt-10 border-t-2 border-b-2 border-navy-blue py-10">
                     <div className="flex items-center gap-5 mb-5">
                         <p className={`${roboto_semibold.className} text-xl`}>Reviews:</p>
-                        { session && <ReviewButton /> }
-                        {/* Convert this to a component later */}
+                        { session && <ReviewButton review={review?.review} slug={product?.slug}/> }
                     </div>
                     <div className="px-2 text-lg">
                         {product.reviews?.map((review)=>{

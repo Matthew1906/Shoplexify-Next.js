@@ -4,9 +4,9 @@ import prisma from "@/app/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest){
+    const searchParams = req.nextUrl.searchParams;
+    const isQueryExist = (key:string)=>searchParams.get(key)??false;
     try{
-        const searchParams = req.nextUrl.searchParams;
-        const isQueryExist = (key:string)=>searchParams.get(key)??false;
         const sortBy = searchParams.get('sortBy')??"";
         const page = parseInt(searchParams.get('page')??"1");
         const pageLength:number = parseInt(process.env.PAGE_LENGTH??"5");
@@ -126,6 +126,10 @@ export async function GET(req:NextRequest){
             // : products
         });
     } catch (error) {
-        console.log(error);
+        return NextResponse.json({
+            page:0,
+            length:0,
+            data:[]
+        })
     }
 }

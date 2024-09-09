@@ -35,7 +35,9 @@ const Header = (
         <div className="ml-8 flex justify-between items-center gap-5">
             { isLoggedIn
                 ? <>
-                    <IconButton Icon={MdFace} text={username??"Jane Doe"} theme="primary"/> 
+                    <Link href="/profile">
+                        <IconButton Icon={MdFace} text={username??"Jane Doe"} theme="primary"/> 
+                    </Link>
                     <TextButton text="Logout" theme='secondary' onClick={()=>signOut({callbackUrl:'/'})}/>
                     {/* display IconButton to view profile */}
                 </>

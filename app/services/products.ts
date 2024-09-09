@@ -25,7 +25,7 @@ export const getProducts = async(searchParams: searchParams|null): Promise<produ
             editableParams.set("sortBy", searchParams?.sortBy);
         } 
         if(searchParams?.page){
-            editableParams.set("page", searchParams?.page.toString());
+            editableParams.set("page", searchParams?.page.toString()??"1");
         } 
         const url = `${process.env.SERVER_URL}/api/products?${editableParams.toString()}`;
         const response = await fetch(url, {method:"GET"});

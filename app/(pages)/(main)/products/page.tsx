@@ -5,6 +5,8 @@ import { getCategories } from "@/app/services/categories";
 import { getProducts } from "@/app/services/products"
 import { FilterForm, Pagination } from "./ui";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({searchParams}:{searchParams?:searchParams}){  
     const categories: Array<categories> | undefined = await getCategories();
     const productData: productsResponse | undefined = await getProducts(searchParams??null);

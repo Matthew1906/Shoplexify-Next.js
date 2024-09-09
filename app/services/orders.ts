@@ -2,9 +2,6 @@
 
 import { headers } from "next/headers";
 import { orderResponse } from "../lib/interface";
-import { revalidatePath } from "next/cache";
-import { OutgoingHttpHeader } from "http";
-import { OutgoingHttpHeaders } from "http2";
 
 export const getOrders = async():Promise<Array<orderResponse>|undefined>=>{
     const url = `${process.env.SERVER_URL}/api/cart`;

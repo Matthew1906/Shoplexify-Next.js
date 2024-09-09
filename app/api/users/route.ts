@@ -1,6 +1,18 @@
 import { z } from 'zod';
 import prisma from '@/app/lib/prisma';
-import { generatePassword } from '@/app/lib/auth';
+import { authOptions, generatePassword } from '@/app/lib/auth';
+import { getServerSession } from 'next-auth';
+import { NextRequest } from 'next/server';
+
+export async function GET(req: NextRequest){
+    try {
+        const session = await getServerSession(authOptions);
+        console.log(session);
+        return Response.json({status:true});
+    } catch(error) {
+        console.log(error);
+    }
+}
 
 export async function POST(req:Request){
     try {
