@@ -1,7 +1,7 @@
 'use server'
 
 import { headers } from "next/headers";
-import { transactionHistoryResponse, transactionResponse } from "../lib/interface";
+import { transactionHistoryResponse, transactionResponse } from "@/app/lib/interface";
 
 export const getTransactions = async():Promise<Array<transactionResponse> | undefined>=>{
     try {

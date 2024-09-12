@@ -1,11 +1,12 @@
 'use client'
 
 import Link from "next/link";
-import { LogoIcon, MenuIcon } from "../icons";
-import { IconButton, TextButton } from "../buttons";
-import { MdFace, MdNotifications, MdOutlineInsertChart, MdOutlineWarehouse, MdShoppingCart } from "react-icons/md";
+import SearchBar from "./search_bar";
 import { signOut } from "next-auth/react";
-import { SearchBar } from "../helpers";
+import { MdFace, MdNotifications, MdOutlineInsertChart, MdOutlineWarehouse, MdShoppingCart } from "react-icons/md";
+import { IconButton, TextButton } from "../buttons";
+import { LogoIcon, MenuIcon } from "../icons";
+
 
 const Header = (
     { isAuth=false, isLoggedIn=true, username, isAdmin=false }:

@@ -1,3 +1,5 @@
+'use client'
+
 import { roboto_semibold } from "@/app/lib/font"
 import { MdStar } from "react-icons/md"
 

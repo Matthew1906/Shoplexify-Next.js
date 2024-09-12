@@ -1,9 +1,9 @@
 'use server'
 
-import { z } from 'zod';
 import prisma from '@/app/lib/prisma';
-import { comparePassword, generatePassword } from '@/app/lib/auth';
 import { getServerSession } from 'next-auth';
+import { z } from 'zod';
+import { comparePassword, generatePassword } from '@/app/lib/auth';
 
 export async function POST(req:Request){
     try {

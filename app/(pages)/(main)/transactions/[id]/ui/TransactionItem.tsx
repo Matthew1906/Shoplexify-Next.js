@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { MdStar } from "react-icons/md";
 import { roboto_semibold } from "@/app/lib/font";
 import { transactionHistoryDetails } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
-import { MdStar } from "react-icons/md";
 
 const TransactionItem = ({item}:{item:transactionHistoryDetails})=>{
     return <div className="grid grid-cols-3 items-start gap-2 mb-5">

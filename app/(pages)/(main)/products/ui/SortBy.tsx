@@ -1,8 +1,8 @@
 'use client'
 
-import { roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent } from "react";
+import { roboto_regular } from "@/app/lib/font";
 
 const SortBy = ()=>{
     const pathname = usePathname();

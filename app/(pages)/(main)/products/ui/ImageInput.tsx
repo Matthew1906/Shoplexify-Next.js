@@ -1,7 +1,9 @@
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { imageInput } from "../lib/interface";
-import { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
+'use client'
+
 import Image from "next/image";
+import { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { imageInput } from "@/app/lib/interface";
 
 const ImageInput = (
     { p, image, rootProps, inputProps } : 

@@ -1,13 +1,12 @@
 'use client'
 
-import { TextButton } from "@/app/components/buttons"
-import { roboto_bold, roboto_semibold } from "@/app/lib/font"
-import { categories } from "@prisma/client"
+import AddProductButton from "./AddProductButton"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { categories } from "@prisma/client"
 import { FormEvent, useState } from "react"
-import AddProductButton from "./AddProductButton"
-// import { MdStar } from "react-icons/md"
+import { TextButton } from "@/app/components/buttons"
+import { roboto_bold, roboto_semibold } from "@/app/lib/font"
 
 const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     // Validate number input

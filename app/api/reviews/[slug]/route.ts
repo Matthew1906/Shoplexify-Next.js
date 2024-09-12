@@ -21,7 +21,9 @@ export async function GET(req:NextRequest, {params}:{params:{slug:string}}){
                 where:{
                     product_id: product?.id,
                     transactions:{
-                        user_id:user?.id
+                        user_id:user?.id,
+                        delivery_status:"Delivered",
+                        payment_status:"Paid"
                     }
                 }
             });

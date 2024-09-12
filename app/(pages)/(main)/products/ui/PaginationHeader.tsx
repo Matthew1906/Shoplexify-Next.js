@@ -1,6 +1,6 @@
 'use client'
 
-import SortBy from "@/app/components/helpers/sort_by";
+import SortBy from "./SortBy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 

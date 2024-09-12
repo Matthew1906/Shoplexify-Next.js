@@ -1,3 +1,5 @@
+'use client'
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";

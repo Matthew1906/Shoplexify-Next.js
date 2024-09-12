@@ -63,7 +63,7 @@ export async function GET(req: NextRequest){
     }
 }
 
-export async function POST(req: NextRequest){
+export async function PUT(req: NextRequest){
     try {
         const sessionData = await getServerSession();
         if(sessionData?.user?.email){

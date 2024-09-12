@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./prisma";
+import { NextAuthOptions } from "next-auth";
 
 export const comparePassword = async(password: string, encryptedPassword:string): Promise<boolean> => {
     const hashedSplit = encryptedPassword.split("$");

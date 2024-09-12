@@ -1,3 +1,5 @@
+'use server'
+
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -44,6 +46,7 @@ export async function POST(req: NextRequest){
                 })
             }
             revalidatePath('/products/'+ productSlug)
+            revalidatePath('/products')
             return Response.json({status:true});
         }
         return Response.json({status:false});

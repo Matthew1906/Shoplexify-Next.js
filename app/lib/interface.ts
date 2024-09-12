@@ -38,7 +38,7 @@ export interface productsResponse {
 
 export interface productMutationData {
     name: string,
-    id: number,
+    slug: string,
     description: string, 
     image_url: string,
     price: number,

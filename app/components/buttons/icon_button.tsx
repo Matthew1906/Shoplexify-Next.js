@@ -1,7 +1,7 @@
 'use client'
 
-import { roboto_semibold } from "@/app/lib/font";
 import { IconType } from "react-icons";
+import { roboto_semibold } from "@/app/lib/font";
 
 const IconButton = (
     {theme='primary', text, Icon} : {theme:string, text:string, Icon:IconType}

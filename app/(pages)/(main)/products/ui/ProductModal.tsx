@@ -1,17 +1,17 @@
 'use client'
 
-import BaseModal from "@/app/components/BaseModal";
+import ImageInput from "./ImageInput";
+import { useRouter } from "next/navigation";
+import { categories } from "@prisma/client";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { TextButton } from "@/app/components/buttons";
-import ImageInput from "@/app/components/ImageInput";
 import { useImage } from "@/app/hooks";
 import { roboto_regular } from "@/app/lib/font";
 import { productMutationData, productMutationResponse } from "@/app/lib/interface";
 import { base64String } from "@/app/lib/string";
+import { BaseModal } from "@/app/(pages)/(main)/ui";
 import { getCategories } from "@/app/services/categories";
 import { createProduct, updateProduct } from "@/app/services/products";
-import { categories } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { DetailedHTMLProps, FormEvent, FormHTMLAttributes, useEffect, useRef, useState } from "react";
 
 const ProductModal = (
     { show, onHideModal, product } : 
@@ -39,8 +39,7 @@ const ProductModal = (
                 r.blob().then(res=>base64String(res).then(res=>{
                     formData.set('image', res);
                     if(product){
-                        formData.set('id', product.id.toString());
-                        updateProduct(formData).then(res=>{
+                        updateProduct(product.slug, formData).then(res=>{
                             setErrorStatus(res);    
                             if(res?.status){
                                 const slug = res.slug;

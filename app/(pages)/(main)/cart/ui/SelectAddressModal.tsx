@@ -1,10 +1,11 @@
-import BaseModal from "@/app/components/BaseModal"
-import AddressMap from "@/app/components/AddressMap"
-import { MdSearch } from "react-icons/md";
-import { address, geolocationResponse } from "@/app/lib/interface";
+'use client'
+
 import { KeyboardEvent, useState } from "react";
-import { roboto_semibold } from "@/app/lib/font";
+import { MdSearch } from "react-icons/md";
 import { TextButton } from "@/app/components/buttons";
+import { roboto_semibold } from "@/app/lib/font";
+import { address, geolocationResponse } from "@/app/lib/interface";
+import { BaseModal, AddressMap }from "@/app/(pages)/(main)/ui";
 
 const SelectAddressModal = (
     { show, onHideModal, saveAddress } : 

@@ -1,13 +1,13 @@
 'use client'
 
+import SelectAddressModal from "./SelectAddressModal";
+import { useRouter } from "next/navigation";
+import { FormEvent, useMemo, useState } from "react";
+import { TextButton } from "@/app/components/buttons";
 import { address, orderResponse } from "@/app/lib/interface";
 import { currencyString } from "@/app/lib/string";
-import { FormEvent, useMemo, useState } from "react";
-import AddressMap from "@/app/components/AddressMap";
-import { TextButton } from "@/app/components/buttons";
-import SelectAddressModal from "./SelectAddressModal";
+import { AddressMap } from "@/app/(pages)/(main)/ui";
 import { checkoutOrders } from "@/app/services/orders";
-import { useRouter } from "next/navigation";
 
 const CheckoutForm = ({orders}:{orders:Array<orderResponse>|undefined})=>{
     const totalPrice = useMemo(()=>{

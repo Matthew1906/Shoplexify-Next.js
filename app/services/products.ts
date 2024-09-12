@@ -1,8 +1,29 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { productMutationResponse, productResponse, productsResponse, searchParams } from "../lib/interface";
 import { headers } from "next/headers";
+import { 
+    productMutationResponse, productResponse, 
+    productsResponse, searchParams 
+} from "@/app/lib/interface";
+
+export const createProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/products`;
+        const cookieHeader = new Headers();
+        const cookies = headers().get("cookie")??"";
+        cookieHeader.set("cookie", cookies);
+        const response = await fetch(url, { 
+            method:'POST', 
+            headers:cookieHeader, 
+            body: formData
+        });
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}
 
 export const getProducts = async(searchParams: searchParams|null): Promise<productsResponse|undefined>=>{
     try {
@@ -49,14 +70,14 @@ export const getProduct = async(slug:string):Promise<productResponse|undefined> 
     }
 }
 
-export const createProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
+export const updateProduct = async(slug:string, formData: FormData):Promise<productMutationResponse|undefined>=>{
     try {
-        const url = `${process.env.SERVER_URL}/api/products`;
+        const url = `${process.env.SERVER_URL}/api/products/${slug}`;
         const cookieHeader = new Headers();
         const cookies = headers().get("cookie")??"";
         cookieHeader.set("cookie", cookies);
         const response = await fetch(url, { 
-            method:'POST', 
+            method:'PUT', 
             headers:cookieHeader, 
             body: formData
         });
@@ -67,14 +88,16 @@ export const createProduct = async(formData: FormData):Promise<productMutationRe
     }
 }
 
-export const updateProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
+export const updateProductStock = async(slug:string, stock:number)=>{
     try {
-        const url = `${process.env.SERVER_URL}/api/products`;
+        const url = `${process.env.SERVER_URL}/api/products/${slug}`;
         const cookieHeader = new Headers();
         const cookies = headers().get("cookie")??"";
         cookieHeader.set("cookie", cookies);
+        const formData = new FormData();
+        formData.append('stock', stock.toString());
         const response = await fetch(url, { 
-            method:'PUT', 
+            method:'PATCH', 
             headers:cookieHeader, 
             body: formData
         });

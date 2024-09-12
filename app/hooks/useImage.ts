@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { imageInput } from "../lib/interface";
+import { imageInput } from "@/app/lib/interface";
 
 const useImage = ()=>{
     const [image, setImage] = useState<imageInput|undefined>();

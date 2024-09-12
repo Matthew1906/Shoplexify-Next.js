@@ -1,9 +1,9 @@
+import { notFound } from "next/navigation";
 import { roboto_bold, roboto_regular } from "@/app/lib/font";
 import { transactionHistoryDetails, transactionHistoryResponse } from "@/app/lib/interface";
-import { getTransactionHistory } from "@/app/services/transactions";
 import { dateString } from "@/app/lib/string";
+import { getTransactionHistory } from "@/app/services/transactions";
 import { TransactionItem, TransactionSummary } from "./ui";
-import { notFound } from "next/navigation";
 
 export default async function TransactionHistoryPage({params}:{params:{id:number}}){
     const id = params.id;

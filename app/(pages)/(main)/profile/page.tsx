@@ -1,12 +1,11 @@
+import Image from "next/image";
 import { authOptions } from "@/app/lib/auth";
 import { roboto_bold, roboto_regular } from "@/app/lib/font";
 import { transactionResponse } from "@/app/lib/interface";
+import { dateString } from "@/app/lib/string";
 import { getTransactions } from "@/app/services/transactions";
 import { getServerSession } from "next-auth";
-import TransactionCard from "./ui/TransactionCard";
-import Image from "next/image";
-import ProfileForm from "./ui/ProfileForm";
-import { dateString } from "@/app/lib/string";
+import { ProfileForm, TransactionCard } from "./ui";
 
 export const dynamic = 'force-dynamic';
 

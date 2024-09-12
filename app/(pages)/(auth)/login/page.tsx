@@ -1,9 +1,9 @@
 'use client'
 
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
-import { signIn } from "next-auth/react";
 import { TextButton } from "@/app/components/buttons";
 import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { authResponse } from "@/app/lib/interface";

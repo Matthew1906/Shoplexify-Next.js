@@ -1,12 +1,12 @@
 'use server'
 
-import { deleteFile, uploadImage } from "@/app/lib/imagekit";
+import slugify from "slugify";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import slugify from "slugify";
 import { z } from "zod";
+import { uploadImage } from "@/app/lib/imagekit";
 
 export async function GET(req:NextRequest){
     const searchParams = req.nextUrl.searchParams;
@@ -148,6 +148,9 @@ export async function POST(req:NextRequest){
             if(!user){
                 return Response.json({status:false, message: "User cant be found!"});
             } 
+            if(user.id!=1){
+                return Response.json({status:false, message: "Only admin can add/update products"});
+            }
             const name = formData.get('name')?.toString();
             const description = formData.get('description')?.toString();
             const price = parseInt(formData.get('price')?.toString()??"-1");
@@ -196,84 +199,6 @@ export async function POST(req:NextRequest){
             }
         }
         revalidatePath('/products');
-        return Response.json({status:false, message:"Not Authorized"});
-    } catch(error) {
-        console.log(error);
-        return Response.json({status:false, message: "Unexpected error occurred!"});
-    }
-}
-
-export async function PUT(req:NextRequest){
-    try {
-        console.log("test")
-        const sessionData = await getServerSession();
-        const formData = await req.formData();
-        if(sessionData?.user?.email){
-            const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
-            if(!user){
-                return Response.json({status:false, message: "User cant be found!"});
-            } 
-            const id = parseInt(formData.get('id')?.toString()??"-1")
-            const name = formData.get('name')?.toString();
-            const description = formData.get('description')?.toString();
-            const price = parseInt(formData.get('price')?.toString()??"-1");
-            const stock = parseInt(formData.get('stock')?.toString()??"-1");
-            const encodedImage = formData.get('image')?.toString();
-            const categories = formData.getAll("category");
-            const slug = slugify(name??"").toLowerCase();
-            if(id == -1){
-                return Response.json({status:false, message: "Unexpected error occurred"});
-            }
-            const productExist = await prisma.products.findFirst({where:{ id:id }});
-            if(productExist == null){
-                return Response.json({status:false, message: "Product doesn't exist!"});
-            }
-            const parsedData = z.object({
-                name: z.string().min(5).max(50),
-                description: z.string().min(5),
-                price: z.number().min(10000).max(100000000),
-            }).safeParse({name, description, price, stock});
-            if(parsedData.success){
-                const filename = productExist.image_url.replace(process.env.IMAGEKIT_URL+"/shoplexify/", "")
-                const deleteImageStatus = await deleteFile(filename);
-                if(!deleteImageStatus){
-                    return Response.json({status:false, error:{image:"Unexpected error occurred, please retry!"}});
-                }
-                const { imageId, image } = await uploadImage(encodedImage??"", slug, '');
-                const updatedProduct = await prisma.products.update({
-                    where:{ id:id },
-                    data:{
-                        name: parsedData.data.name,
-                        description: parsedData.data.description,
-                        price: parsedData.data.price,
-                        image_url: image,
-                        slug: slug
-                    }
-                })
-                await prisma.product_categories.deleteMany({
-                    where:{ product_id: updatedProduct.id }
-                })
-                await Promise.all(categories.map(async(category)=>{
-                    const categoryFromDB = await prisma.categories.findFirst({
-                        where:{slug:category.toString()}
-                    })
-                    if(categoryFromDB){
-                        await prisma.product_categories.create({
-                            data:{
-                                category_id: categoryFromDB.id,
-                                product_id: updatedProduct.id
-                            }
-                        })
-                    }
-                }))
-                revalidatePath('/products');
-                revalidatePath('/products/'+productExist.slug);
-                revalidatePath('/products/'+updatedProduct.slug);
-                return Response.json({ status:true, slug:updatedProduct.slug })
-            } else if (parsedData.error){
-                return Response.json({status:false, error:parsedData.error.flatten().fieldErrors});
-            }
-        }
         return Response.json({status:false, message:"Not Authorized"});
     } catch(error) {
         console.log(error);

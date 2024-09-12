@@ -1,11 +1,11 @@
 'use client'
 
-import { currencyString } from "@/app/lib/string"
-import AddressMap from "@/app/components/AddressMap"
-import { TextButton } from "@/app/components/buttons"
-import { useEffect, useMemo, useState } from "react"
-import { address, transactionHistoryDetails, geolocationResponse } from "@/app/lib/interface"
 import { useRouter } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
+import { TextButton } from "@/app/components/buttons"
+import { address, transactionHistoryDetails, geolocationResponse } from "@/app/lib/interface"
+import { currencyString } from "@/app/lib/string"
+import { AddressMap } from "../../../ui"
 
 const TransactionSummary = (
     {addressString="", deliveryFee=0, details=[], status=""} : 

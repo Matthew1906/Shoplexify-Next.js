@@ -1,16 +1,16 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { MdStar } from "react-icons/md";
+import { authOptions } from "@/app/lib/auth";
 import { roboto_light, roboto_regular, roboto_semibold } from "@/app/lib/font";
 import { productResponse, reviewResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
 import { getProduct } from "@/app/services/products";
-import OrderSection from "@/app/components/OrderSection";
-import { ReviewButton, ReviewItem, UpdateProductButton } from "./ui";
 import { getReview } from "@/app/services/reviews";
-import { authOptions } from "@/app/lib/auth";
-import { notFound } from "next/navigation";
+import { ReviewButton, ReviewItem, StockSection, UpdateProductButton } from "./ui";
+import { OrderSection } from "../../ui";
 
 export default async function ProductPage( 
     {params}:{params:{slug:string}}
@@ -48,26 +48,30 @@ export default async function ProductPage(
                         {product.description}
                     </p>
                 </div>
-                <div className="">
-                { session && session.role == 'user' && <OrderSection product={product?.slug} 
-                    stock={product?.stock??0} price={product.price}
-                /> }
-                { session?.role == 'admin' && <UpdateProductButton product={{
-                    id: product.id,
-                    name: product.name,
-                    description: product.description,
-                    image_url: product.image_url,
-                    price: product.price,
-                    categories: product.categories
-                }} /> }
+                <div>
+                    { session && session.role == 'user' && <OrderSection product={product?.slug} 
+                        stock={product?.stock??0} price={product.price}
+                    /> }
+
+                    { session?.role == 'admin' && 
+                    <>
+                        <StockSection product={product.slug} stock={product.stock} />
+                        <UpdateProductButton product={{
+                            name: product.name,
+                            slug: product.slug,
+                            description: product.description,
+                            image_url: product.image_url,
+                            price: product.price,
+                            categories: product.categories
+                        }} />
+                    </> }
                 </div>
-                
             </section>
             { ((product.reviews?.length??0) > 0 || (review?.status && review.hasPurchased))  &&
                 <section id="product-reviews" className="mt-10 border-t-2 border-b-2 border-navy-blue py-10">
                     <div className="flex items-center gap-5 mb-5">
                         <p className={`${roboto_semibold.className} text-xl`}>Reviews:</p>
-                        { session && session.role == 'user' && <ReviewButton review={review?.review} slug={product?.slug}/> }
+                        { session && session.role == 'user' && review?.hasPurchased && <ReviewButton review={review?.review} slug={product?.slug}/> }
                     </div>
                     <div className="px-2 text-lg">
                         {product.reviews?.map((review)=>{

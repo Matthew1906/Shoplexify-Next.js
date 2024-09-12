@@ -1,8 +1,8 @@
 'use client'
 
 import { useSession } from "next-auth/react";
-import { Header } from "@/app/components/partials";
 import { Suspense } from "react";
+import { Header } from "@/app/components/partials";
 
 export default function RootLayout(
     { children }:

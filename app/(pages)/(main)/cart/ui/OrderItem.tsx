@@ -1,9 +1,11 @@
+'use client'
+
 import Image from "next/image";
+import { MdStar } from "react-icons/md";
 import { roboto_semibold } from "@/app/lib/font";
 import { orderResponse } from "@/app/lib/interface";
 import { currencyString, popularityString } from "@/app/lib/string";
-import { MdStar } from "react-icons/md";
-import OrderSection from "@/app/components/OrderSection";
+import { OrderSection } from "../../ui";
 
 const OrderItem = ({item}:{item:orderResponse})=>{
     return <div className="grid grid-cols-3 items-start gap-2 mb-5">

@@ -1,18 +1,7 @@
 'use server'
 
 import { headers } from "next/headers";
-import { reviewResponse } from "../lib/interface";
-
-export const getReview = async(productSlug:string):Promise<reviewResponse|undefined>=>{
-    try {
-        const url = `${process.env.SERVER_URL}/api/reviews/${productSlug}`;
-        const response = await fetch(url, {method:'GET', headers:headers()});
-        const jsonResponse = await response.json();
-        return jsonResponse;
-    } catch(error) {
-        console.log(error);
-    }
-}
+import { reviewResponse } from "@/app/lib/interface";
 
 export const createReview = async(formData: FormData)=>{
     try {
@@ -25,6 +14,17 @@ export const createReview = async(formData: FormData)=>{
             headers:cookieHeader, 
             body: formData
         });
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const getReview = async(productSlug:string):Promise<reviewResponse|undefined>=>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/reviews/${productSlug}`;
+        const response = await fetch(url, {method:'GET', headers:headers()});
         const jsonResponse = await response.json();
         return jsonResponse;
     } catch(error) {

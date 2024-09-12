@@ -1,11 +1,13 @@
-import BaseModal from "@/app/components/BaseModal"
-import { FormEvent, useRef, useState } from "react";
-import { roboto_semibold } from "@/app/lib/font";
-import { TextButton } from "@/app/components/buttons";
-import { reviews } from "@prisma/client";
+'use client'
+
 import RatingInput from "./RatingInput";
-import { createReview } from "@/app/services/reviews";
 import { useRouter } from "next/navigation";
+import { reviews } from "@prisma/client";
+import { FormEvent, useRef, useState } from "react";
+import { TextButton } from "@/app/components/buttons";
+import { roboto_semibold } from "@/app/lib/font";
+import { BaseModal } from "@/app/(pages)/(main)/ui";
+import { createReview } from "@/app/services/reviews";
 
 const ReviewModal = (
     { slug, show, onHideModal, review } : 
