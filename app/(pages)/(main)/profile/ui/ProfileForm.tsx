@@ -5,11 +5,12 @@ import { roboto_semibold } from "@/app/lib/font"
 import { profileResponse } from "@/app/lib/interface"
 import { updateProfile } from "@/app/services/users"
 import { useRouter } from "next/navigation"
-import { FormEvent, useMemo, useState } from "react"
+import { FormEvent, useMemo, useRef, useState } from "react"
 
 const ProfileForm = ({dob}:{dob:Date|null}) =>{
     const router = useRouter();
     const [ errorStatus, setErrorStatus ] = useState<profileResponse>();
+    const formRef = useRef<HTMLFormElement|null>(null);
     const handleSubmit = (event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -18,6 +19,8 @@ const ProfileForm = ({dob}:{dob:Date|null}) =>{
             setErrorStatus({status:data.status, error:data?.error, message:data?.message});
             if(data.status){
                 router.refresh();
+            } else {
+                formRef?.current?.reset();
             }
         })
     }
@@ -28,7 +31,7 @@ const ProfileForm = ({dob}:{dob:Date|null}) =>{
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }, [dob])
-    return <form onSubmit={handleSubmit} className="p-10">
+    return <form onSubmit={handleSubmit} ref={formRef} className="p-10">
         <div className="w-full mb-2">
             <label htmlFor="dob" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Date of Birth</label>
             <input 

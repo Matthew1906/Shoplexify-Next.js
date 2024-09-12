@@ -3,11 +3,14 @@ import { transactionHistoryDetails, transactionHistoryResponse } from "@/app/lib
 import { getTransactionHistory } from "@/app/services/transactions";
 import { dateString } from "@/app/lib/string";
 import { TransactionItem, TransactionSummary } from "./ui";
-
+import { notFound } from "next/navigation";
 
 export default async function TransactionHistoryPage({params}:{params:{id:number}}){
     const id = params.id;
     const transactionHistory: transactionHistoryResponse|undefined = await getTransactionHistory(id);
+    if(!transactionHistory?.status){
+        return notFound();
+    }
     return <main className={`${roboto_regular.className} py-10 px-20 grid grid-cols-8`}>
         <section className="col-span-5">
             <div className="flex grow justify-between items-center gap-5 mb-8">

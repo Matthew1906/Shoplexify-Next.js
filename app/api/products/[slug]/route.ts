@@ -9,12 +9,22 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
         const data = await prisma.products.findFirst({
             where:{ slug: slug.toString() },
             select:{ 
+                id: true,
                 slug:true,
                 name:true, 
                 description: true,
                 price:true,
                 stock:true,
                 image_url:true,
+                product_categories:{
+                    select:{
+                        categories:{
+                            select:{
+                                name: true
+                            }
+                        }
+                    }
+                },
                 transaction_details:{
                     select:{
                         quantity: true 
@@ -33,9 +43,13 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
                 }
             }
         })
+        if(!data){
+            return Response.json({status:false});
+        }
         let quantities = data?.transaction_details.map(detail=>detail.quantity)??[];
         let ratings = data?.reviews.map(review=>review.rating)??[]
         const product = {
+            id: data?.id,
             slug:data?.slug,
             name:data?.name, 
             description: data?.description,
@@ -49,8 +63,11 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
                 rating: review.rating,
                 review: review.review
             })),
+            categories: data?.product_categories.map(category=>{
+                return category.categories.name
+            })
         }
-        return NextResponse.json(product);
+        return NextResponse.json({...product, status:true});
     } catch (error) {
         console.log(error);
     }

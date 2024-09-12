@@ -1,5 +1,5 @@
 import BaseModal from "@/app/components/BaseModal"
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { roboto_semibold } from "@/app/lib/font";
 import { TextButton } from "@/app/components/buttons";
 import { reviews } from "@prisma/client";
@@ -14,6 +14,7 @@ const ReviewModal = (
     const [ rating, setRating ] = useState<number>(review?.rating??0);
     const [ isError, setIsError ] = useState<boolean>(false);
     const router = useRouter();
+    const formRef = useRef<HTMLFormElement|null>(null);
     const handleSubmit = (event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -25,12 +26,13 @@ const ReviewModal = (
                 onHideModal();
             } else {
                 setIsError(true)
+                formRef?.current?.reset();
             }
         })
     }
     return (
         <BaseModal show={show} onHideModal={onHideModal} className="w-5/12 h-auto">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} ref={formRef}>
                 <h6 className="font-semibold text-xl mb-5 text-center">Product Review Form</h6>
                 { isError && <p className={`${roboto_semibold.className} text-red px-1`}>Something went wrong!</p>}
                 <div className="w-full mb-4">

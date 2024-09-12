@@ -36,6 +36,30 @@ export interface productsResponse {
     data?: Array<Product>
 }
 
+export interface productMutationData {
+    name: string,
+    id: number,
+    description: string, 
+    image_url: string,
+    price: number,
+    stock?:number,
+    categories?: Array<string> 
+}
+
+export interface productMutationResponse {
+    status: boolean
+    message?:string
+    slug?:string,
+    error?: {
+        name?:string
+        description?:string
+        image?:string
+        price?:string
+        stock?:string,
+        categories?:string
+    }
+}
+
 export interface Review {
     user: string,
     rating: number,
@@ -43,8 +67,11 @@ export interface Review {
 }
 
 export interface productResponse extends Product {
-    description?: string,
-    stock?: number,
+    id: number,
+    status: boolean,
+    description: string,
+    stock: number,
+    categories?: Array<string>,
     reviews?: Array<Review>,
 }
 
@@ -87,6 +114,7 @@ export interface transactionHistoryDetails extends Product{
 
 export interface transactionHistoryResponse {
     id:number,
+    status:boolean,
     date: Date,
     address: string,
     delivery_cost: number,
@@ -108,4 +136,8 @@ export interface profileResponse {
         password?:string
         confirmPassword?:string
     }
+}
+
+export interface imageInput {
+    preview: string
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Footer } from "./components/partials";
-import { Providers } from "./providers";
+import { AuthProvider } from "./providers";
 
 export const metadata: Metadata = {
   title: "Shoplexify",
@@ -16,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col justify-stretch min-h-screen">
-        <Providers>
+        <AuthProvider>
             {children} 
-        </Providers> 
+        </AuthProvider> 
         <Footer/>
       </body>
     </html>

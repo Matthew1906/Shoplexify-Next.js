@@ -1,11 +1,18 @@
 'use client'
 
 import { TextButton } from "@/app/components/buttons"
+import { useState } from "react";
+import ProductModal from "../../ui/ProductModal";
+import { productMutationData } from "@/app/lib/interface";
 
-const UpdateProductButton = ()=>{
+const UpdateProductButton = ({product}:{product:productMutationData})=>{
+    const [ showProductForm, setShowProductForm ] = useState<boolean>(false);
+    const openForm = ()=>setShowProductForm(true);
+    const closeForm = ()=>setShowProductForm(false);
     return <>
         <div className="flex self-stretch my-4">
-            <TextButton text='Edit Product' onClick={()=>{}} className="flex-grow"/>
+            <TextButton text='Edit Product' onClick={openForm} className="flex-grow"/>
+            <ProductModal onHideModal={closeForm} product={product} show={showProductForm} />
         </div>
     </>
 }

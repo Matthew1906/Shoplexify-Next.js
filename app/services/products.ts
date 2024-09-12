@@ -1,7 +1,8 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { productResponse, productsResponse, searchParams } from "../lib/interface";
+import { productMutationResponse, productResponse, productsResponse, searchParams } from "../lib/interface";
+import { headers } from "next/headers";
 
 export const getProducts = async(searchParams: searchParams|null): Promise<productsResponse|undefined>=>{
     try {
@@ -42,6 +43,42 @@ export const getProduct = async(slug:string):Promise<productResponse|undefined> 
         const response = await fetch(url, {method:'GET'});
         const jsonResponse = await response.json();
         revalidatePath(`/products/${slug}`)
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const createProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/products`;
+        const cookieHeader = new Headers();
+        const cookies = headers().get("cookie")??"";
+        cookieHeader.set("cookie", cookies);
+        const response = await fetch(url, { 
+            method:'POST', 
+            headers:cookieHeader, 
+            body: formData
+        });
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const updateProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/products`;
+        const cookieHeader = new Headers();
+        const cookies = headers().get("cookie")??"";
+        cookieHeader.set("cookie", cookies);
+        const response = await fetch(url, { 
+            method:'PUT', 
+            headers:cookieHeader, 
+            body: formData
+        });
+        const jsonResponse = await response.json();
         return jsonResponse;
     } catch(error) {
         console.log(error);

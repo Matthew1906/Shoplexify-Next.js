@@ -15,11 +15,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             }
             const transactionHistory = await prisma.transactions.findFirst({
                 where:{
-                    user_id:user.id,
                     id:parseInt(id)
                 },
             });
             if(!transactionHistory){
+                return Response.json({status:false});
+            }
+            if(user.id!=1 && transactionHistory.user_id!=user.id){
                 return Response.json({status:false});
             }
             const transactionDetails = await prisma.transaction_details.findMany({
@@ -65,6 +67,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 }
             })
             return Response.json({
+                status:true,
                 ...transactionHistory,
                 transaction_status: transactionHistory.payment_status == 'Unpaid' 
                 ? 'Unpaid' 

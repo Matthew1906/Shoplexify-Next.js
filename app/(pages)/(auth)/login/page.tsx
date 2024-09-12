@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { TextButton } from "@/app/components/buttons";
 import { roboto_bold, roboto_regular, roboto_semibold } from "@/app/lib/font";
@@ -11,6 +11,7 @@ import { authResponse } from "@/app/lib/interface";
 export default function Login(){
     const [ errorStatus, setErrorStatus ] = useState<authResponse>();
     const router = useRouter();
+    const formRef = useRef<HTMLFormElement|null>(null);
     const handleSubmit = async(event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -29,10 +30,12 @@ export default function Login(){
                 router.push('/');
                 router.refresh();
             })
+        } else {
+            formRef?.current?.reset();
         }
     }
     return <main className='p-5 w-full flex justify-center items-start'>
-        <form onSubmit={handleSubmit} className="p-10 bg-white border-1 border-black rounded-lg w-1/4 flex-center flex-col gap-2 drop-shadow-md">
+        <form onSubmit={handleSubmit} ref={formRef} className="p-10 bg-white border-1 border-black rounded-lg w-1/4 flex-center flex-col gap-2 drop-shadow-md">
             <h3 className={`${roboto_bold.className} text-2xl`}>Login</h3>
             { !errorStatus?.status && errorStatus?.message &&
                 <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.message}</p>
