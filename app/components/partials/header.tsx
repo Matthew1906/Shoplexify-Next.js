@@ -7,7 +7,6 @@ import { MdFace, MdNotifications, MdOutlineInsertChart, MdOutlineWarehouse, MdSh
 import { IconButton, TextButton } from "../buttons";
 import { LogoIcon, MenuIcon } from "../icons";
 
-
 const Header = (
     { isAuth=false, isLoggedIn=true, username, isAdmin=false }:
     { isAuth:boolean, isLoggedIn:boolean, username?:string, isAdmin:boolean }
@@ -20,9 +19,9 @@ const Header = (
                   ? <div className="flex flex-grow items-center gap-2">
                         <SearchBar/>
                         {/* Dashboard Menu */}
-                        <MenuIcon link='#' Icon={MdOutlineInsertChart}/>
+                        <MenuIcon link='/admin' Icon={MdOutlineInsertChart}/>
                         {/* Stocks Menu */}
-                        <MenuIcon link='#' Icon={MdOutlineWarehouse}/>
+                        <MenuIcon link='/products' Icon={MdOutlineWarehouse}/>
                     </div>
                   : <div className="flex flex-grow items-center gap-2">
                         <SearchBar/>
@@ -41,7 +40,6 @@ const Header = (
                         <IconButton Icon={MdFace} text={username??"Jane Doe"} theme="primary"/> 
                     </Link>
                     <TextButton text="Logout" theme='secondary' onClick={()=>signOut({callbackUrl:'/'})}/>
-                    {/* display IconButton to view profile */}
                 </>
                 : <>
                     <Link href="/login">

@@ -12,9 +12,9 @@ export async function GET(){
                 return Response.json({ status:false });
             } 
             const transactionData = await prisma.transactions.findMany({
-                where:{
+                where: user.id != 1 ? {
                     user_id: user.id
-                },
+                } : {},
                 select:{
                     id: true,
                     date: true,
