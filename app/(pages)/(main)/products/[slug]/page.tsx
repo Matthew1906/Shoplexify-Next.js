@@ -47,12 +47,12 @@ export default async function ProductPage(
                     <p className={`${roboto_regular.className} text-lg`}>
                         {product.description}
                     </p>
+                    {product.stock<=0 && <div className='p-2 rounded-lg text-white font-semibold bg-red'>SOLD OUT</div>}
                 </div>
                 <div>
                     { session && session.role == 'user' && <OrderSection product={product?.slug} 
                         stock={product?.stock??0} price={product.price}
                     /> }
-
                     { session?.role == 'admin' && 
                     <>
                         <StockSection product={product.slug} stock={product.stock} />

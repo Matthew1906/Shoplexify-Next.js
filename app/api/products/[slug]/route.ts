@@ -193,3 +193,28 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
         return Response.json({status:false, message: "Unexpected error occurred!"});
     }
 }
+
+export async function DELETE(req:NextRequest, { params }: { params: { slug: string } }){
+    try {
+        const sessionData = await getServerSession();
+        const slug = params.slug;
+        if(sessionData?.user?.email){
+            const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
+            if(!user){
+                return Response.json({status:false, message: "User cant be found!"});
+            } 
+            if(user.id!=1){
+                return Response.json({status:false, message: "Only admin can delete products"});
+            }
+            
+            revalidatePath("/cart")
+            revalidatePath('/products');
+            return Response.json({ status:true, message:"Product has been deleted!" })
+            
+        }
+        return Response.json({status:false, message:"Not Authorized"});
+    } catch(error) {
+        console.log(error);
+        return Response.json({status:false, message: "Unexpected error occurred!"});
+    }
+}

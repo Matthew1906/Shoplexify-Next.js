@@ -22,6 +22,17 @@ const config: Config = {
       }
     },
   },
+  safelist:[
+    {
+      pattern: /bg-(green|blue|yellow|red|navy-blue|black|white)/
+    },
+    {
+      pattern: /text-(green|blue|yellow|red|navy-blue|black|white)/
+    },
+    {
+      pattern: /border-(green|blue|yellow|red|navy-blue|black|white)/
+    },
+  ],
   plugins: [],
 };
 export default config;

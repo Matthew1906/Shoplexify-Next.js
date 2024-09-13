@@ -18,6 +18,7 @@ export async function GET(req:NextRequest){
         const length = await prisma.products.count({
             where:{
                 AND:[ 
+                    { stock :{ gt:0 } },
                     { OR:[
                         isQueryExist('query') ? 
                             { name: { 

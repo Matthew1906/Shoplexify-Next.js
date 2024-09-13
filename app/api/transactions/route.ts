@@ -17,6 +17,11 @@ export async function GET(){
                 } : {},
                 select:{
                     id: true,
+                    users:{
+                        select:{
+                            name: true
+                        }
+                    },
                     date: true,
                     delivery_status: true,
                     delivery_cost: true,
@@ -27,11 +32,13 @@ export async function GET(){
                             quantity: true
                         }
                     }
-                }
+                },
+                orderBy: user.id == 1 ? { date: 'desc' } : {}
             })
             const transactions = transactionData.map(transaction=>{
                 return {
                     id: transaction.id,
+                    user: transaction.users?.name,
                     date: transaction.date,
                     status: transaction.payment_status == 'Unpaid' 
                         ? 'Unpaid' 
