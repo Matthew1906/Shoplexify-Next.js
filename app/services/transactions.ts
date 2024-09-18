@@ -6,7 +6,7 @@ import { transactionHistoryResponse, transactionResponse } from "@/app/lib/inter
 export const getTransactions = async():Promise<Array<transactionResponse> | undefined>=>{
     try {
         const url = `${process.env.SERVER_URL}/api/transactions`;
-        const response = await fetch(url, {method:'GET', headers:headers()});
+        const response = await fetch(url, {method:'GET', headers:headers(), next:{ tags:['transactions'] }});
         const jsonResponse = await response.json();
         return jsonResponse.data;
     } catch(error){
@@ -17,7 +17,7 @@ export const getTransactions = async():Promise<Array<transactionResponse> | unde
 export const getTransactionHistory = async (transactionId:number):Promise<transactionHistoryResponse|undefined>=>{
     try{
         const url = `${process.env.SERVER_URL}/api/transactions/${transactionId}`;
-        const response = await fetch(url, {method:'GET', headers:headers()});
+        const response = await fetch(url, {method:'GET', headers:headers(), next:{ tags:['transactions'] } });
         const jsonResponse = await response.json();
         return jsonResponse;
     } catch(error) {

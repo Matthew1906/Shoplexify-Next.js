@@ -3,7 +3,7 @@
 import slugify from "slugify";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { deleteFile, uploadImage } from "@/app/lib/imagekit";
@@ -140,7 +140,7 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                         })
                     }
                 }))
-                revalidatePath('/products');
+                revalidateTag("products")
                 revalidatePath('/products/'+productExist.slug);
                 revalidatePath('/products/'+updatedProduct.slug);
                 return Response.json({ status:true, slug:updatedProduct.slug })
@@ -180,36 +180,10 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                 where:{ id:productExist.id },
                 data:{ stock:newStock }
             });
-            revalidatePath("/cart")
-            revalidatePath('/products');
+            revalidateTag("cart")
             revalidatePath('/products/'+productExist.slug);
             revalidatePath('/products/'+updatedProduct.slug);
             return Response.json({ status:true, message:"Product stock has been updated!" })
-            
-        }
-        return Response.json({status:false, message:"Not Authorized"});
-    } catch(error) {
-        console.log(error);
-        return Response.json({status:false, message: "Unexpected error occurred!"});
-    }
-}
-
-export async function DELETE(req:NextRequest, { params }: { params: { slug: string } }){
-    try {
-        const sessionData = await getServerSession();
-        const slug = params.slug;
-        if(sessionData?.user?.email){
-            const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
-            if(!user){
-                return Response.json({status:false, message: "User cant be found!"});
-            } 
-            if(user.id!=1){
-                return Response.json({status:false, message: "Only admin can delete products"});
-            }
-            
-            revalidatePath("/cart")
-            revalidatePath('/products');
-            return Response.json({ status:true, message:"Product has been deleted!" })
             
         }
         return Response.json({status:false, message:"Not Authorized"});

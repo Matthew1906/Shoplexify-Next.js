@@ -3,7 +3,7 @@
 import slugify from "slugify";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { uploadImage } from "@/app/lib/imagekit";
@@ -194,12 +194,13 @@ export async function POST(req:NextRequest){
                         })
                     }
                 }))
+                revalidateTag("products")
                 return Response.json({ status:true, slug:newProduct.slug })
             } else if (parsedData.error){
                 return Response.json({status:false, error:parsedData.error.flatten().fieldErrors});
             }
         }
-        revalidatePath('/products');
+        revalidateTag("products")
         return Response.json({status:false, message:"Not Authorized"});
     } catch(error) {
         console.log(error);

@@ -2,6 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
+import { revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }){
@@ -110,6 +111,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
                     payment_status:"Paid"
                 }
             })
+            revalidateTag("transactions")
+            revalidateTag("products")
             return Response.json({status:true});
         }
         return Response.json({status:false});

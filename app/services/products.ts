@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { 
     productMutationResponse, productResponse, 
@@ -50,7 +49,8 @@ export const getProducts = async(searchParams: searchParams|null): Promise<produ
             editableParams.set("page", searchParams?.page.toString()??"1");
         } 
         const url = `${process.env.SERVER_URL}/api/products?${editableParams.toString()}`;
-        const response = await fetch(url, {method:"GET"});
+        // Tags: product (all changes to the any products will require a refresh in products page)
+        const response = await fetch(url, {method:"GET", next:{ tags:['products'] }});
         const jsonResponse = await response.json();
         return jsonResponse;
     } catch(error){
@@ -61,9 +61,8 @@ export const getProducts = async(searchParams: searchParams|null): Promise<produ
 export const getProduct = async(slug:string):Promise<productResponse|undefined> =>{
     try {
         const url = `${process.env.SERVER_URL}/api/products/${slug}`;
-        const response = await fetch(url, {method:'GET'});
+        const response = await fetch(url, { method:'GET' }); // use revalidate Path
         const jsonResponse = await response.json();
-        revalidatePath(`/products/${slug}`)
         return jsonResponse;
     } catch(error) {
         console.log(error);

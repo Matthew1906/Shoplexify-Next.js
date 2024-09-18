@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest){
@@ -45,8 +45,9 @@ export async function POST(req: NextRequest){
                     }
                 })
             }
-            revalidatePath('/products/'+ productSlug)
-            revalidatePath('/products')
+            revalidatePath('/products/'+ productSlug);
+            revalidateTag("products");
+            revalidateTag("cart");
             return Response.json({status:true});
         }
         return Response.json({status:false});

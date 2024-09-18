@@ -15,14 +15,15 @@ export const createOrder = async(product:string, quantity:number)=>{
 
 export const getOrders = async():Promise<Array<orderResponse>|undefined>=>{
     const url = `${process.env.SERVER_URL}/api/cart`;
-    const response = await fetch(url, { method: 'GET', headers:headers() });
+    //  Tags: order (all changes related to cart quantity or order detail)
+    const response = await fetch(url, { method: 'GET', headers:headers(), next:{ tags:['cart'] } });
     const jsonResponse = await response.json();
     return jsonResponse.data;
 }
 
 export const getOrder = async(product:string)=>{
     const url = `${process.env.SERVER_URL}/api/cart/${product}`;
-    const response = await fetch(url, { method:'GET', headers:headers() });
+    const response = await fetch(url, { method:'GET', headers:headers(), next:{ tags:['cart'] } });
     const jsonResponse = await response.json();
     return jsonResponse;
 }
