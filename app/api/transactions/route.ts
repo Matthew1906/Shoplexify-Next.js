@@ -2,8 +2,10 @@
 
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
+import { NextRequest } from "next/server";
 
-export async function GET(){
+export async function GET(req: NextRequest){
+    const searchParams = req.nextUrl.searchParams;
     try {
         const sessionData = await getServerSession();
         if(sessionData?.user?.email){
@@ -11,10 +13,19 @@ export async function GET(){
             if(!user){
                 return Response.json({ status:false });
             } 
+            const page = parseInt(searchParams.get('page')??"1");
+            const pageLength:number = parseInt(process.env.PAGE_LENGTH??"5");
+            const length = await prisma.transactions.count({
+                where: user.id != 1 ? {
+                    user_id: user.id
+                } : {}
+            });
             const transactionData = await prisma.transactions.findMany({
                 where: user.id != 1 ? {
                     user_id: user.id
                 } : {},
+                skip: user.id == 1 ? pageLength * (page-1):0,
+                ...(user.id == 1 ? { take:pageLength } : {}),
                 select:{
                     id: true,
                     users:{
@@ -49,7 +60,10 @@ export async function GET(){
                         transaction.transaction_details.reduce((a, b)=>a + b.price * b.quantity, 0)
                 }
             })
-            return Response.json({ status: true, data: transactions })
+            return Response.json({ 
+                status: true, 
+                data: transactions, 
+                ...(user.id == 1? { page: page, length: length }:{}) })
         }
         return Response.json({ status:false });
     } catch(error) {

@@ -1,12 +1,23 @@
 'use client'
 
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import { roboto_semibold } from "@/app/lib/font";
-import { adminTransactions } from "@/app/lib/interface";
+import { adminOrdersResponse, adminTransactions } from "@/app/lib/interface";
 import { currencyString, dateString } from "@/app/lib/string";
+import { PaginationBar } from "../../ui";
 
-const OrderTable = ({orders}:{orders:Array<adminTransactions> | undefined})=>{
+const OrderTable = ({orders}:{orders:adminOrdersResponse | undefined})=>{
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
+    useEffect(()=>{
+        const editableParams = new URLSearchParams(searchParams);
+        editableParams.set('page', (orders?.page??"1").toString());
+        router.replace(`${pathname}?${editableParams.toString()}`);
+    }, []);
     const getTheme = (status:string)=>{
         if(status == 'Unpaid') {
             return 'bg-red'
@@ -28,7 +39,7 @@ const OrderTable = ({orders}:{orders:Array<adminTransactions> | undefined})=>{
                 </tr>
             </thead>
             <tbody className={roboto_semibold.className}>
-                {(orders??[]).map((order:adminTransactions)=>{
+                {(orders?.data??[]).map((order:adminTransactions)=>{
                     const theme = getTheme(order.status)
                     return <tr key={order.id}>
                         <td className="p-4 text-center">{order.id}</td>
@@ -49,6 +60,7 @@ const OrderTable = ({orders}:{orders:Array<adminTransactions> | undefined})=>{
                 })}
             </tbody>
         </table>
+        <PaginationBar total={orders?.length??0} page={orders?.page??1}/>
     </>
 }
 

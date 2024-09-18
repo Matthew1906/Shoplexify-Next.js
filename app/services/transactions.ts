@@ -24,3 +24,14 @@ export const getTransactionHistory = async (transactionId:number):Promise<transa
         console.log(error);
     }
 }
+
+export const updateTransactionStatus = async(transactionId:number)=>{
+    try{
+        const url = `${process.env.SERVER_URL}/api/transactions/${transactionId}`;
+        const response = await fetch(url, {method:'PATCH', headers:headers()});
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}

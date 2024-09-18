@@ -6,10 +6,14 @@ import { TextButton } from "@/app/components/buttons"
 import { address, transactionHistoryDetails, geolocationResponse } from "@/app/lib/interface"
 import { currencyString } from "@/app/lib/string"
 import { AddressMap } from "../../../ui"
+import { updateTransactionStatus } from "@/app/services/transactions"
 
 const TransactionSummary = (
-    {addressString="", deliveryFee=0, details=[], status=""} : 
-    {addressString?:string, deliveryFee?: number, details?:Array<transactionHistoryDetails>, status?:string}
+    {addressString="", deliveryFee=0, details=[], status="", id, isAdmin=false} : 
+    {
+        addressString?:string, deliveryFee?: number, 
+        details?:Array<transactionHistoryDetails>, 
+        status?:string, id: number, isAdmin:boolean}
 )=>{
     const router = useRouter();
     const totalPrice = useMemo(()=>{
@@ -45,6 +49,14 @@ const TransactionSummary = (
             return 'bg-yellow'
         } else return 'bg-green'
     }, [status]);
+
+    const completeTransaction = ()=>{
+        updateTransactionStatus(id).then(res=>{
+            if(res.status){
+                router.refresh();
+            }
+        })
+    }
     return <section className="col-span-3 p-8">
         <div className="border-2 border-navy-blue rounded-lg p-5">
             <section>
@@ -63,8 +75,9 @@ const TransactionSummary = (
                 <h4 className="text-2xl font-semibold">Status: </h4>
                 <div className={`p-2 rounded-lg text-white font-semibold ${theme}`}>{status}</div>
             </section>
-            <div className="flex-center mt-5">
+            <div className="flex-center mt-5 gap-3">
                 <TextButton text="Go Back" theme="secondary" onClick={()=>router.back()}/>
+                {isAdmin && <TextButton text="Complete Transaction" onClick={completeTransaction}/>}
             </div>
         </div>
     </section>

@@ -1,11 +1,26 @@
 'use server'
 
 import { headers } from "next/headers";
-import { adminMetric, adminSearchParams, adminTransactions, Product } from "../lib/interface";
+import { 
+    adminMetric, adminOrderMetrics, 
+    adminOrdersResponse, adminSearchParams, Product 
+} from "@/app/lib/interface";
+import { revalidatePath } from "next/cache";
 
 export const getMetrics = async():Promise<adminMetric|undefined>=>{
     try {
         const url = `${process.env.SERVER_URL}/api/admin`;
+        const response = await fetch(url, {method:'GET', headers:headers()});
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const getOrderMetrics = async():Promise<adminOrderMetrics|undefined>=>{
+    try {
+        const url = `${process.env.SERVER_URL}/api/admin/transactions`;
         const response = await fetch(url, {method:'GET', headers:headers()});
         const jsonResponse = await response.json();
         return jsonResponse;
@@ -31,12 +46,14 @@ export const getTopProducts = async(searchParams: adminSearchParams|null):Promis
     }
 }
 
-export const getTransactions = async():Promise<Array<adminTransactions> | undefined>=>{
+export const getTransactions = async(searchParams: adminSearchParams|null):Promise<adminOrdersResponse | undefined>=>{
     try {
-        const url = `${process.env.SERVER_URL}/api/transactions`;
+        const editableParams = new URLSearchParams();
+        editableParams.set("page", (searchParams?.page??"1").toString());
+        const url = `${process.env.SERVER_URL}/api/transactions?${editableParams.toString()}`;
         const response = await fetch(url, {method:'GET', headers:headers()});
         const jsonResponse = await response.json();
-        return jsonResponse.data;
+        return jsonResponse;
     } catch(error){
         console.log(error);
     }

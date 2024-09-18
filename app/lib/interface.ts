@@ -174,7 +174,24 @@ export interface adminTransactions extends transactionResponse {
     user: string
 }
 
+// Get all products (paginated)
+export interface adminOrdersResponse {
+    page?: number,
+    length?: number,
+    data?: Array<adminTransactions>
+}
+
 // Admin page search params 
 export interface adminSearchParams {
-    month: number
+    month: number,
+    page: number,
 }
+
+export interface orderMetrics {
+    data: Array<{ month: number, total: number }>
+}
+
+export interface adminOrderMetrics extends orderMetrics {
+    status: boolean
+}
+

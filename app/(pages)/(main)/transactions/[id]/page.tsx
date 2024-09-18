@@ -4,9 +4,12 @@ import { transactionHistoryDetails, transactionHistoryResponse } from "@/app/lib
 import { dateString } from "@/app/lib/string";
 import { getTransactionHistory } from "@/app/services/transactions";
 import { TransactionItem, TransactionSummary } from "./ui";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
 
 export default async function TransactionHistoryPage({params}:{params:{id:number}}){
     const id = params.id;
+    const session = await getServerSession(authOptions);
     const transactionHistory: transactionHistoryResponse|undefined = await getTransactionHistory(id);
     if(!transactionHistory?.status){
         return notFound();
@@ -27,6 +30,8 @@ export default async function TransactionHistoryPage({params}:{params:{id:number
             deliveryFee={transactionHistory?.delivery_cost} 
             addressString={transactionHistory?.address}
             status={transactionHistory?.transaction_status}
+            id={id}
+            isAdmin={session?.role=='admin'}
         />
     </main>
 }

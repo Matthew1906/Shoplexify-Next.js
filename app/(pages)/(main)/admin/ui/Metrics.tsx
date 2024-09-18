@@ -4,6 +4,7 @@ import { IconType } from "react-icons";
 import { FaCommentDots, FaMoneyBill, FaShoppingBag, FaShoppingCart, FaUserFriends } from "react-icons/fa";
 import { roboto_bold } from "@/app/lib/font";
 import { adminMetric } from "@/app/lib/interface";
+import { popularityString } from "@/app/lib/string";
 
 const MetricItem = (
     {Icon, color, label, value} : 
@@ -14,7 +15,7 @@ const MetricItem = (
         <Icon className="w-14 h-14" />
         <div className="text-center font-bold">
             <p>{label}</p>
-            <p>{value}</p>
+            <p>{popularityString(value)}</p>
         </div>
     </div>
 }

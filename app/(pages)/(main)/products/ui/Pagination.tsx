@@ -1,8 +1,8 @@
 'use client'
 
 import PaginationHeader from "./PaginationHeader";
-import PaginationBar from "./PaginationBar";
 import ProductCard from "./ProductCard";
+import { PaginationBar } from "../../ui";
 import { Product, productsResponse } from "@/app/lib/interface";
 
 const Pagination = ({products}:{products:productsResponse|undefined})=>{

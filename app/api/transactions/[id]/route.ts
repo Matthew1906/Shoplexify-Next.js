@@ -82,3 +82,38 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         console.log(error);
     }
 }
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }){
+    try {
+        const sessionData = await getServerSession();
+        const id = params.id;
+        if(sessionData?.user?.email){
+            const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
+            if(!user){
+                return Response.json({status:false});
+            }
+            const transactionHistory = await prisma.transactions.findFirst({
+                where:{
+                    id:parseInt(id)
+                },
+            });
+            if(!transactionHistory){
+                return Response.json({status:false});
+            }
+            if(user.id!=1){
+                return Response.json({status:false});
+            }
+            await prisma.transactions.update({
+                where:{id:transactionHistory.id},
+                data:{
+                    delivery_status:"Delivered",
+                    payment_status:"Paid"
+                }
+            })
+            return Response.json({status:true});
+        }
+        return Response.json({status:false});
+    } catch(error) {
+        console.log(error);
+    }
+}
