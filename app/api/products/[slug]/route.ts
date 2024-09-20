@@ -4,7 +4,7 @@ import slugify from "slugify";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import { deleteFile, uploadImage } from "@/app/lib/imagekit";
 
@@ -49,7 +49,7 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
             }
         })
         if(!data){
-            return Response.json({status:false});
+            return Response.json({ status:false }, { status:404 });
         }
         let quantities = data?.transaction_details.map(detail=>detail.quantity)??[];
         let ratings = data?.reviews.map(review=>review.rating)??[]
@@ -72,9 +72,9 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
                 return category.categories.name
             })
         }
-        return NextResponse.json({...product, status:true});
+        return Response.json({ ...product, status:true }, { status:200 });
     } catch (error) {
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -86,10 +86,10 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false, message: "User cant be found!"});
+                return Response.json({ status:false, message: "User cant be found!" }, { status:404 });
             } 
             if(user.id!=1){
-                return Response.json({status:false, message: "Only admin can add/update products"});
+                return Response.json({ status:false, message: "Only admin can add/update products" }, { status:401 });
             }
             const name = formData.get('name')?.toString();
             const description = formData.get('description')?.toString();
@@ -100,7 +100,7 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
             const newSlug = slugify(name??"").toLowerCase();
             const productExist = await prisma.products.findFirst({where:{ slug:slug }});
             if(productExist == null){
-                return Response.json({status:false, message: "Product doesn't exist!"});
+                return Response.json({ status:false, message:"Product doesn't exist!" }, { status:404 });
             }
             const parsedData = z.object({
                 name: z.string().min(5).max(50),
@@ -111,7 +111,7 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                 const filename = productExist.image_url.replace(process.env.IMAGEKIT_URL+"/shoplexify/", "")
                 const deleteImageStatus = await deleteFile(filename);
                 if(!deleteImageStatus){
-                    return Response.json({status:false, error:{image:"Unexpected error occurred, please retry!"}});
+                    return Response.json({ status:false, error:{ image:"Unexpected error occurred, please retry!" } }, { status:500 });
                 }
                 const { imageId, image } = await uploadImage(encodedImage??"", newSlug, '');
                 const updatedProduct = await prisma.products.update({
@@ -141,17 +141,14 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                     }
                 }))
                 revalidateTag("products")
-                revalidatePath('/products/'+productExist.slug);
-                revalidatePath('/products/'+updatedProduct.slug);
-                return Response.json({ status:true, slug:updatedProduct.slug })
+                return Response.json({ status:true, slug:updatedProduct.slug }, { status:200 })
             } else if (parsedData.error){
-                return Response.json({status:false, error:parsedData.error.flatten().fieldErrors});
+                return Response.json({ status:false, error:parsedData.error.flatten().fieldErrors }, { status:422 });
             }
         }
-        return Response.json({status:false, message:"Not Authorized"});
+        return Response.json({ status:false, message:"Not Authorized" }, { status:401 });
     } catch(error) {
-        console.log(error);
-        return Response.json({status:false, message: "Unexpected error occurred!"});
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -163,18 +160,18 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false, message: "User cant be found!"});
+                return Response.json({ status:false, message:"User cant be found!" }, { status:404 });
             } 
             if(user.id!=1){
-                return Response.json({status:false, message: "Only admin can add/update products"});
+                return Response.json({ status:false, message:"Only admin can add/update products" }, { status:401 });
             }
             const productExist = await prisma.products.findFirst({where:{ slug:slug }});
             if(productExist == null){
-                return Response.json({status:false, message: "Product doesn't exist!"});
+                return Response.json({ status:false, message:"Product doesn't exist!" }, { status:404 });
             }
             const newStock = parseInt(formData.get('stock')?.toString()??"0");
             if(newStock<=0){
-                return Response.json({status:false, message:"Stock can't be zero!"});
+                return Response.json({ status:false, message:"Stock can't be zero!" }, { status:422 });
             }
             const updatedProduct = await prisma.products.update({
                 where:{ id:productExist.id },
@@ -183,12 +180,11 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
             revalidateTag("cart")
             revalidatePath('/products/'+productExist.slug);
             revalidatePath('/products/'+updatedProduct.slug);
-            return Response.json({ status:true, message:"Product stock has been updated!" })
+            return Response.json({ status:true, message:"Product stock has been updated!" }, { status:200 })
             
         }
-        return Response.json({status:false, message:"Not Authorized"});
+        return Response.json({ status:false, message:"Not Authorized" }, { status:401 });
     } catch(error) {
-        console.log(error);
-        return Response.json({status:false, message: "Unexpected error occurred!"});
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

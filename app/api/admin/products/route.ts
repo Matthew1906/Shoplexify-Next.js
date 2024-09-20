@@ -11,7 +11,7 @@ export async function GET(req:NextRequest){
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user || user.id!=1){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:401 }); // User not found
             } 
             // Get the 4 most purchased products on a certain month (0-11) 
             const currentYear = new Date().getFullYear();
@@ -70,10 +70,10 @@ export async function GET(req:NextRequest){
                     avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length)
                 }
             }));
-            return Response.json({ status: true, topProducts })
+            return Response.json({ status:true, topProducts }, { status:200 }) // Data successfully retrieved
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status:401 }); // Authorization error
     } catch(error) {
-        return Response.json({ status:false, message:error })
+        return Response.json({ status:false, message:error }, { status:500 }) // Server error
     }
 }

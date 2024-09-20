@@ -11,11 +11,11 @@ export async function GET(req:NextRequest, {params}:{params:{slug:string}}){
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:404 });
             } 
             const product = await prisma.products.findFirst({where:{slug:slug}});
             if(!product){
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:404 });
             }
             const productTransactionCount = await prisma.transaction_details.count({
                 where:{
@@ -34,10 +34,10 @@ export async function GET(req:NextRequest, {params}:{params:{slug:string}}){
                     user_id:user?.id
                 }
             })
-            return Response.json({ review, hasPurchased, status:true })
+            return Response.json({ review, hasPurchased, status:true }, { status:200 })
         }
-        return Response.json({status:false});
+        return Response.json({ status:false }, { status:401 });
     } catch(error) {
-        return Response.json({status:false});
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

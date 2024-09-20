@@ -1,6 +1,11 @@
 import Image from "next/image";
 import background from "@/public/auth-bg.jpg"
 import { Header } from "@/app/components/partials";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login/Register - Shoplexify",
+};
 
 export default function RootLayout(
   { children }: Readonly<{children: React.ReactNode}>

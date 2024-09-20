@@ -130,13 +130,14 @@ export async function GET(req:NextRequest){
             // data:isQueryExist('rating') 
             // ? products.filter(product=>ratings.includes(Math.ceil(product.avg_rating)))
             // : products
-        });
+        }, { status:200 });
     } catch (error) {
         return NextResponse.json({
             page:0,
             length:0,
-            data:[]
-        })
+            data:[],
+            message:error
+        }, { status:500 })
     }
 }
 
@@ -147,10 +148,10 @@ export async function POST(req:NextRequest){
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false, message: "User cant be found!"});
+                return Response.json({ status:false, message:"User cant be found!" }, { status:404 });
             } 
             if(user.id!=1){
-                return Response.json({status:false, message: "Only admin can add/update products"});
+                return Response.json({ status:false, message:"Only admin can add/update products" }, { status:401 });
             }
             const name = formData.get('name')?.toString();
             const description = formData.get('description')?.toString();
@@ -161,7 +162,7 @@ export async function POST(req:NextRequest){
             const slug = slugify(name??"").toLowerCase();
             const productExist = await prisma.products.count({where:{ slug:slug }});
             if(productExist>0){
-                return Response.json({status:false, message: "Product already exists!"});
+                return Response.json({ status:false, message:"Product already exists!" }, { status:404 });
             }
             const parsedData = z.object({
                 name: z.string().min(5).max(50),
@@ -195,15 +196,14 @@ export async function POST(req:NextRequest){
                     }
                 }))
                 revalidateTag("products")
-                return Response.json({ status:true, slug:newProduct.slug })
+                return Response.json({ status:true, slug:newProduct.slug }, { status:201 })
             } else if (parsedData.error){
-                return Response.json({status:false, error:parsedData.error.flatten().fieldErrors});
+                return Response.json({ status:false, error:parsedData.error.flatten().fieldErrors }, { status:422 });
             }
         }
         revalidateTag("products")
-        return Response.json({status:false, message:"Not Authorized"});
+        return Response.json({ status:false, message:"Not Authorized" }, { status:401 });
     } catch(error) {
-        console.log(error);
-        return Response.json({status:false, message: "Unexpected error occurred!"});
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

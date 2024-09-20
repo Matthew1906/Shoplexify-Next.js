@@ -16,18 +16,18 @@ export async function POST(req:Request){
         if(parsedCredentials.success){
             const user = await prisma.users.findFirst({where:{email:parsedCredentials.data.email}});
             if(!user){
-                return Response.json({status:false, message:"Account does not exist!"});
+                return Response.json({ status:false, message:"Account does not exist!" }, { status:404 });
             }
             const isSamePassword = await comparePassword(password?.toString()??"", user.password);
             if(isSamePassword){
-                return Response.json({status:true, message:"Login Successful"});
+                return Response.json({ status:true, message:"Login Successful" }, { status:200 });
             } else {
-                return Response.json({status:false, message:"Password doesnt match"});
+                return Response.json({ status:false, message:"Password doesnt match" }, { status:401 });
             }
         } else if (parsedCredentials.error){
-            return Response.json({status:false, error:parsedCredentials.error.flatten().fieldErrors});
+            return Response.json({ status:false, error:parsedCredentials.error.flatten().fieldErrors }, { status:401 });
         }
     } catch (error){
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

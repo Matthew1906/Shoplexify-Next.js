@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 import { TextButton } from "@/app/components/buttons";

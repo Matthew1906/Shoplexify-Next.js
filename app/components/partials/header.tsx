@@ -3,7 +3,7 @@
 import Link from "next/link";
 import SearchBar from "./search_bar";
 import { signOut } from "next-auth/react";
-import { MdFace, MdNotifications, MdOutlineInsertChart, MdOutlineWarehouse, MdShoppingCart } from "react-icons/md";
+import { MdFace, MdOutlineInsertChart, MdOutlineWarehouse, MdShoppingCart } from "react-icons/md";
 import { IconButton, TextButton } from "../buttons";
 import { LogoIcon, MenuIcon } from "../icons";
 
@@ -26,7 +26,7 @@ const Header = (
                   : <div className="flex flex-grow items-center gap-2">
                         <SearchBar/>
                         <MenuIcon link='/cart' Icon={MdShoppingCart}/>
-                        { isLoggedIn && <MenuIcon link="#" Icon={MdNotifications}/> }
+                        {/* { isLoggedIn && <MenuIcon link="#" Icon={MdNotifications}/> } */}
                     </div>
                 }
                 </> // display search bar and icons if not login page

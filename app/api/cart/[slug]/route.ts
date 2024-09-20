@@ -20,16 +20,16 @@ export async function GET(req:NextRequest, { params }: { params: { slug: string 
                     }
                 })
                 if(order){ // Check if the order actually exists (since we are getting the order detail)
-                    return Response.json({status:true, quantity:order.quantity});
+                    return Response.json({ status:true, quantity:order.quantity }, { status:200 });
                 } else {
-                    return Response.json({status:false});
+                    return Response.json({ status:false }, { status:404 });
                 }
             }
-            return Response.json({status:false});
+            return Response.json({ status:false }, { status:404 });
         }
-        return Response.json({status:false});
-    } catch(error){ 
-        console.log(error)
+        return Response.json({ status:false }, { status:404 });
+    } catch(error) { 
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -68,16 +68,16 @@ export async function POST(req:NextRequest, { params }: { params: { slug: string
                         revalidatePath('/products/' + slug);
                         // Revalidate cart
                         revalidateTag('cart');
-                        return Response.json({status:true});
+                        return Response.json({ status:true }, { status:201 });
                     }    
                 }
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:500 });
             }
-            return Response.json({status:false});
+            return Response.json({ status:false }, { status:404 });
         }
-        return Response.json({status:false});
-    } catch (error){
-        console.log(error);
+        return Response.json({ status:false }, { status:401 });
+    } catch (error) {
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -105,11 +105,11 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                     data: { stock: { increment:order!==null?order?.quantity:0 }}
                 })
                 if(updatedProduct.stock>=quantity){
-                    if(quantity<=0){ // Remove the product if its less than 1 (there is actually a delete button as well, but just in case)
+                    if(quantity<=0){ // Remove the order if its less than 1 (there is actually a delete button as well, but just in case)
                         await prisma.orders.delete({
                             where:{ user_id_product_id: { user_id: user.id, product_id: product.id} },
                         })
-                        return Response.json({status:false});
+                        return Response.json({ status:true }, { status:200 });
                     }
                     if(order){ // the order must exist to be updated
                         await prisma.orders.update({
@@ -125,17 +125,17 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                         revalidatePath('/products/' + slug);
                         // Revalidate the user's cart
                         revalidateTag('cart');
-                        return Response.json({status:true});
+                        return Response.json({ status:true }, { status:200 });
                     } else {
-                        return Response.json({status:false});
+                        return Response.json({ status:false }, { status:404 });
                     }
                 }
             }
-            return Response.json({status:false});
+            return Response.json({ status:false }, { status:404 });
         }
-        return Response.json({status:false});
+        return Response.json({ status:false }, { status:401 });
     } catch (error){
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -166,14 +166,14 @@ export async function DELETE(req:NextRequest, { params }: { params: { slug: stri
                     revalidatePath('/products/' + slug);
                     // Revalidate the user's cart
                     revalidateTag('cart');
-                    return Response.json({status:true});
+                    return Response.json({ status:true }, { status:200 });
                 } 
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:404 });
             }
-            return Response.json({status:false});
+            return Response.json({ status:false }, { status:404 });
         }
-        return Response.json({status:false});
+        return Response.json({ status:false }, { status:401 });
     } catch (error) {
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

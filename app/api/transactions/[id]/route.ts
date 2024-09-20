@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false});
+                return Response.json({ status:false, message:"User doesn't exist" }, { status:404 });
             }
             const transactionHistory = await prisma.transactions.findFirst({
                 where:{
@@ -20,10 +20,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 },
             });
             if(!transactionHistory){
-                return Response.json({status:false});
+                return Response.json({ status:false, message:"Transaction doesn't exist" }, { status:404 });
             }
             if(user.id!=1 && transactionHistory.user_id!=user.id){
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:401 });
             }
             const transactionDetails = await prisma.transaction_details.findMany({
                 where:{
@@ -76,11 +76,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 ? 'On Process' 
                 : 'Delivered',
                 details: processedDetails
-            })
+            }, { status:200 })
         }
-        return Response.json({status:false});
+        return Response.json({ status:false }, { status:401 });
     } catch(error) {
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -91,7 +91,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({status:false});
+                return Response.json({ status:false, message:"User doesn't exist" }, { status:404 });
             }
             const transactionHistory = await prisma.transactions.findFirst({
                 where:{
@@ -99,10 +99,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
                 },
             });
             if(!transactionHistory){
-                return Response.json({status:false});
+                return Response.json({ status:false, message:"Transaction doesn't exist" }, { status: 404 });
             }
             if(user.id!=1){
-                return Response.json({status:false});
+                return Response.json({ status:false }, { status:401 });
             }
             await prisma.transactions.update({
                 where:{id:transactionHistory.id},
@@ -113,10 +113,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
             })
             revalidateTag("transactions")
             revalidateTag("products")
-            return Response.json({status:true});
+            return Response.json({ status:true }, { status:200 });
         }
-        return Response.json({status:false});
+        return Response.json({ status:false }, { status:401 });
     } catch(error) {
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

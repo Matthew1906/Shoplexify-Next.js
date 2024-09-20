@@ -9,7 +9,7 @@ export async function GET(req:NextRequest) {
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user || user.id!=1){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:404 });
             } 
             const orderMetrics: orderMetrics = await prisma.$queryRaw`
                 SELECT DATE_PART('month', date) AS month, CAST(COUNT(*) AS int) AS total
@@ -17,10 +17,10 @@ export async function GET(req:NextRequest) {
             return Response.json({ 
                 status: true, 
                 data: orderMetrics
-            })
+            }, { status: 200 })
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status:401 });
     } catch (error) {
-        return Response.json({ status:false, message:error });
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

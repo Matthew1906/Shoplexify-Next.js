@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -11,6 +12,17 @@ import { getProduct } from "@/app/services/products";
 import { getReview } from "@/app/services/reviews";
 import { ReviewButton, ReviewItem, StockSection, UpdateProductButton } from "./ui";
 import { OrderSection } from "../../ui";
+
+export async function generateMetadata(
+    {params}:{params:{slug:string}}
+  ): Promise<Metadata> {
+    // read route params
+    const id = params.slug
+    const product: productResponse | undefined = await getProduct(id);
+    return {
+      title: `${product?.name} - Shoplexify`,
+    }
+  }
 
 export default async function ProductPage( 
     {params}:{params:{slug:string}}

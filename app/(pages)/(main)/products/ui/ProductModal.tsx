@@ -31,7 +31,6 @@ const ProductModal = (
     }, [product, setImage]);
     const handleSubmit = (event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        console.log(image)
         setErrorStatus(undefined);
         const formData = new FormData(event.currentTarget);
         if(image){

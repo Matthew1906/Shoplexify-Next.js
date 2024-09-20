@@ -1,7 +1,5 @@
-import { roboto_bold } from "@/app/lib/font";
+import { redirect } from "next/navigation";
 
 export default function Page(){
-    return <div className={roboto_bold.className}>
-        Hello World!
-    </div>
+    return redirect("/products")
 }

@@ -77,7 +77,7 @@ const TransactionSummary = (
             </section>
             <div className="flex-center mt-5 gap-3">
                 <TextButton text="Go Back" theme="secondary" onClick={()=>router.back()}/>
-                {isAdmin && <TextButton text="Complete Transaction" onClick={completeTransaction}/>}
+                {isAdmin &&  status!=='Delivered' && <TextButton text="Complete Transaction" onClick={completeTransaction}/>}
             </div>
         </div>
     </section>

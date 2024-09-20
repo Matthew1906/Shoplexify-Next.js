@@ -6,8 +6,13 @@ import { dateString } from "@/app/lib/string";
 import { getTransactions } from "@/app/services/transactions";
 import { getServerSession } from "next-auth";
 import { ProfileForm, TransactionCard } from "./ui";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+    title:"My Profile - Shoplexify"
+}
 
 export default async function ProfilePage(){
     const profile = await getServerSession(authOptions);
@@ -29,11 +34,13 @@ export default async function ProfilePage(){
             </div>
             <ProfileForm dob={new Date(profile?.dob??"")} />
         </section>
-        <section id="transactions" className="border-navy-blue border-2 rounded-lg p-5">
-            <h4 className={`mb-4 text-2xl ${roboto_bold.className}`}>My Orders</h4>
-            {(transactions??[]).map((transaction:transactionResponse)=>{
-                return <TransactionCard key={transaction.id} transaction={transaction} />
-            })}
-        </section>
+        {profile?.role == 'user' && 
+            <section id="transactions" className="border-navy-blue border-2 rounded-lg p-5">
+                <h4 className={`mb-4 text-2xl ${roboto_bold.className}`}>My Orders</h4>
+                {(transactions??[]).map((transaction:transactionResponse)=>{
+                    return <TransactionCard key={transaction.id} transaction={transaction} />
+                })}
+            </section>
+        }
     </main>
 }

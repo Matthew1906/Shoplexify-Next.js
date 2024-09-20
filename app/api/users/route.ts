@@ -20,11 +20,11 @@ export async function POST(req:Request){
         }).safeParse({username, email, password, confirmPassword});
         if(parsedCredentials.success){
             if (parsedCredentials.data.password != parsedCredentials.data.confirmPassword){
-                return Response.json({status:false, error:{confirmPassword:"Confirm password doesnt match with the password!"}});
+                return Response.json({ status:false, error:{ confirmPassword:"Confirm password doesnt match with the password!" } }, { status:422 });
             }
             const userAlreadyExist = await prisma.users.count({where:{email:parsedCredentials.data.email}});
             if(userAlreadyExist>0){
-                return Response.json({status:false, message:"Account already exist!"});
+                return Response.json({ status:false, message:"Account already exist!" }, { status:401 });
             }
             const newPassword = await generatePassword(parsedCredentials.data.password);
             await prisma.users.create({
@@ -34,12 +34,12 @@ export async function POST(req:Request){
                     password: String(newPassword)
                 }
             })
-            return Response.json({status:true})
+            return Response.json({ status:true }, { status:200 })
         } else if (parsedCredentials.error){
-            return Response.json({status:false, error:parsedCredentials.error.flatten().fieldErrors});
+            return Response.json({ status:false, error:parsedCredentials.error.flatten().fieldErrors }, { status:422 });
         }
     } catch (error){
-        return Response.json({status:false})
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -58,17 +58,17 @@ export async function PATCH(req:Request){
         }).safeParse({dob, password, confirmPassword});
         if(parsedCredentials.success){
             if (parsedCredentials.data.password != parsedCredentials.data.confirmPassword){
-                return Response.json({status:false, error:{confirmPassword:"Confirm password doesnt match with the password!"}});
+                return Response.json({ status:false, error:{confirmPassword:"Confirm password doesnt match with the password!"}}, { status:401 });
             }
             const sessionData = await getServerSession();
             if(sessionData?.user?.email){
                 const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
                 if(!user){
-                    return Response.json({status:false, message:"Account doesn't exists!"})
+                    return Response.json({ status:false, message:"Account doesn't exists!" }, { status:404 })
                 }
                 const isSamePassword = await comparePassword(parsedCredentials.data.password, user.password);
                 if(isSamePassword){
-                    return Response.json({status:false, error:{password:"This is your old password!"}});
+                    return Response.json({ status:false, error:{ password:"This is your old password!" } }, { status:422 });
                 }
                 const newPassword = await generatePassword(parsedCredentials.data.password); 
                 await prisma.users.update({
@@ -78,13 +78,13 @@ export async function PATCH(req:Request){
                         password: String(newPassword),
                     }
                 })
-                return Response.json({status:true})
+                return Response.json({ status:true }, { status:200 })
             }
-            return Response.json({status:false, message:"Account doesn't exists!"})
+            return Response.json({ status:false, message:"Account doesn't exists!" }, { status:404 })
         } else if (parsedCredentials.error){
-            return Response.json({status:false, error:parsedCredentials.error.flatten().fieldErrors});
+            return Response.json({ status:false, error:parsedCredentials.error.flatten().fieldErrors }, { status:422 });
         }
     } catch (error){
-        return Response.json({status:false, message:error})
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

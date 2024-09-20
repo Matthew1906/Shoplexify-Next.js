@@ -13,6 +13,9 @@ export async function GET(req: NextRequest){
             const user = await prisma.users.findFirst({
                 where:{email:sessionData.user.email}
             })
+            if(!user){
+                return Response.json({ status:false }, { status:404 });
+            }
             const orderData = await prisma.orders.findMany({
                 where:{
                     user_id:user?.id
@@ -55,11 +58,12 @@ export async function GET(req: NextRequest){
                     rated_by: ratings.length
                 }
             })
-            return Response.json({ data: orders })
+            return Response.json({ data: orders }, { status:200 })
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status:401 });
     } catch(error){
         console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -71,7 +75,7 @@ export async function PUT(req: NextRequest){
                 where:{email:sessionData.user.email}
             })
             if(!user){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:404 });
             }
             const formData = await req.formData();
             const address = formData.get("address")?.toString();
@@ -83,7 +87,7 @@ export async function PUT(req: NextRequest){
                 }
             });
             if(orders.length<=0){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:404 });
             } else {
                 const newTransaction = await prisma.transactions.create({
                     data:{
@@ -116,12 +120,12 @@ export async function PUT(req: NextRequest){
                 });
                 revalidateTag('cart');
                 revalidateTag('transactions');
-                return Response.json({ status:true, transactionId:newTransaction.id });
+                return Response.json({ status:true, transactionId:newTransaction.id }, { status:200 });
             }
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status: 401 });
     } catch(error) {
-        console.log(error);
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }
 
@@ -133,7 +137,7 @@ export async function DELETE(req: NextRequest){
                 where:{email:sessionData.user.email}
             })
             if(!user){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:404 });
             }
             const orders = await prisma.orders.findMany({
                 where:{
@@ -155,10 +159,10 @@ export async function DELETE(req: NextRequest){
             })
             revalidateTag("cart");
             revalidateTag("products"); // product stock is updated, must be refreshed
-            return Response.json({ status:true });
+            return Response.json({ status:true }, { status:200 });
         }
-        return Response.json({ status:false });
-    } catch(error){
-        console.log(error);
+        return Response.json({ status:false }, { status:401 });
+    } catch(error) { 
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

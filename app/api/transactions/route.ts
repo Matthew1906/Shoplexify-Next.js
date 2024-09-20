@@ -11,7 +11,7 @@ export async function GET(req: NextRequest){
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user){
-                return Response.json({ status:false });
+                return Response.json({ status:false, message:"User doesn't exist" }, { status:404 });
             } 
             const page = parseInt(searchParams.get('page')??"1");
             const pageLength:number = parseInt(process.env.PAGE_LENGTH??"5");
@@ -63,10 +63,11 @@ export async function GET(req: NextRequest){
             return Response.json({ 
                 status: true, 
                 data: transactions, 
-                ...(user.id == 1? { page: page, length: length }:{}) })
+                ...(user.id == 1? { page: page, length: length }:{}) 
+            }, { status:200 })
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status:401 });
     } catch(error) {
-        return Response.json({ status:false, message:error })
+        return Response.json({ status:false, message:error }, { status:500 });
     }
 }

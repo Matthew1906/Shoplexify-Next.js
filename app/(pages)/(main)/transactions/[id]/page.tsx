@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { roboto_bold, roboto_regular } from "@/app/lib/font";
 import { transactionHistoryDetails, transactionHistoryResponse } from "@/app/lib/interface";
@@ -6,6 +7,17 @@ import { getTransactionHistory } from "@/app/services/transactions";
 import { TransactionItem, TransactionSummary } from "./ui";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
+
+export async function generateMetadata(
+    {params}:{params:{id:number}}
+  ): Promise<Metadata> {
+    // read route params
+    const id = params.id
+      
+    return {
+      title: `Transaction ${id} - Shoplexify`,
+    }
+  }
 
 export default async function TransactionHistoryPage({params}:{params:{id:number}}){
     const id = params.id;

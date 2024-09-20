@@ -15,6 +15,7 @@
         "[slug]":"Context",
         "[id]":"Context",
         "[...nextauth]":"Admin",
-        "buttons":"Utils"
+        "buttons":"Utils",
+        "recommendations":"Svg",
     }
 }

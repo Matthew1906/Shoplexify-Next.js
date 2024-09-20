@@ -151,7 +151,7 @@ export interface transactionHistoryResponse {
 
 // Update Profile API Response (form validation)
 export interface profileResponse {
-    status: boolean
+    status?: boolean
     message?:string
     error?: {
         dob?:string,

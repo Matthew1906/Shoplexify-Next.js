@@ -10,7 +10,7 @@ export async function GET(req:NextRequest){
         if(sessionData?.user?.email){
             const user = await prisma.users.findFirst({where:{email:sessionData.user.email}});
             if(!user || user.id!=1){
-                return Response.json({ status:false });
+                return Response.json({ status:false }, { status:404 });
             } 
             // Number of paid orders
             const orderCount = await prisma.transactions.count({where:{payment_status:'Paid'}}); 
@@ -59,10 +59,10 @@ export async function GET(req:NextRequest){
                 revenues: totalRevenue,
                 customers: customerCount,
                 reviews: reviewCount
-            })
+            }, { status: 200 })
         }
-        return Response.json({ status:false });
+        return Response.json({ status:false }, { status:401 });
     } catch(error) {
-        return Response.json({ status:false, message:error })
+        return Response.json({ status:false, message:error }, { status:500 })
     }
 }
