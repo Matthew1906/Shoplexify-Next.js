@@ -9,7 +9,7 @@ const AddProductButton = ()=>{
     const openForm = ()=>setShowProductForm(true);
     const closeForm = ()=>setShowProductForm(false);
     return <>
-        <div className="flex self-stretch my-4">
+        <div className="flex self-stretch my-2 lg:my-4">
             <TextButton text='Add Product' onClick={openForm} className="flex-grow"/>
             <ProductModal onHideModal={closeForm} product={null} show={showProductForm} />
         </div>

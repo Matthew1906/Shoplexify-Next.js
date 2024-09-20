@@ -16,7 +16,7 @@ const PaginationHeader = ({page, total}:{page:number, total:number})=>{
         router.replace(`${pathname}?${editableParams.toString()}`);
     }, []);
     return (
-        <div className="flex justify-between items-center text-xl">
+        <div className="flex justify-between items-center text-sm md:text-xl gap-2 md:gap-0">
             <h4>Showing {" "}
                 <span className="font-bold">
                     {total%10==0||total<10?total:`${total-(total%10)}+`}

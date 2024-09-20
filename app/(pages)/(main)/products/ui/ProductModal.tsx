@@ -69,19 +69,19 @@ const ProductModal = (
     }
     const formRef = useRef<HTMLFormElement|null>(null);
     return (
-        <BaseModal show={show} onHideModal={onHideModal} className="w-5/12 h-auto">
+        <BaseModal show={show} onHideModal={onHideModal} className="w-9/12 lg:w-5/12 h-auto text-xs lg:text-base">
             <form onSubmit={handleSubmit} ref={formRef} className={roboto_regular.className} method="POST">
-                <h6 className="font-semibold text-xl mb-5 text-center">{product?"Edit":"Add"} Product Form</h6>
+                <h6 className="font-semibold text-lg lg:text-xl mb-5 text-center">{product?"Edit":"Add"} Product Form</h6>
                 { !errorStatus?.status && errorStatus?.message && <p className='text-red px-1'>{errorStatus.message}</p>}
                 <div className="w-full mb-2">
-                    <label htmlFor="name" className='block mb-2 text-lg'>Name</label>
+                    <label htmlFor="name" className='block mb-2 text-sm lg:text-lg'>Name</label>
                     {!errorStatus?.status && errorStatus?.error?.name && 
                         <p className='text-red mb-2'>{errorStatus.error?.name}</p>
                     }
-                    <input type="text" name="name" id="name" placeholder="Insert product name" defaultValue={product?.name} className="mb-2 border border-black border-opacity-75 rounded-md w-full px-4 py-2"/>
+                    <input type="text" name="name" id="name" placeholder="Insert product name" defaultValue={product?.name} className="mb-2 border border-black border-opacity-75 rounded-md w-full px-2 lg:px-4 py-1 lg:py-2"/>
                 </div>
                 <div className="w-full">
-                    <label htmlFor="description" className='block mb-2 text-lg'>Description</label>
+                    <label htmlFor="description" className='block mb-2 text-sm lg:text-lg'>Description</label>
                     { !errorStatus?.status && errorStatus?.error?.description && 
                         <p className='text-red mb-2'>{errorStatus.error?.description}</p>
                     }
@@ -89,11 +89,11 @@ const ProductModal = (
                         name="description" rows={5}
                         placeholder="Insert product description" 
                         defaultValue={product?.description}
-                        className="mb-2 border border-black border-opacity-75 rounded-md w-full px-4 py-2"
+                        className="mb-2 border border-black border-opacity-75 rounded-md w-full px-2 lg:px-4 py-1 lg:py-2"
                     />
                 </div>
                 <div className="w-full mb-2">
-                    <label htmlFor="category" className='block text-lg'>Categories</label>
+                    <label htmlFor="category" className='block text-sm lg:text-lg'>Categories</label>
                     {!errorStatus?.status && errorStatus?.error?.categories && 
                         <p className='text-red my-2'>{errorStatus.error?.categories}</p>
                     }
@@ -104,9 +104,9 @@ const ProductModal = (
                         })}
                     </select>
                 </div>
-                <div className={`w-full mb-4 ${product?"":"grid grid-cols-2"}`}>
+                <div className={`w-full mb-4 ${product?"":"lg:grid lg:grid-cols-2"}`}>
                     <div>
-                        <label htmlFor="price" className='block mb-2 text-lg'>Price</label>
+                        <label htmlFor="price" className='block mb-2 text-sm lg:text-lg'>Price</label>
                         { !errorStatus?.status && errorStatus?.error?.price && 
                         <p className='text-red mb-2'>{errorStatus.error?.price}</p>
                         }
@@ -123,7 +123,7 @@ const ProductModal = (
                     </div>
                     { product == null &&
                         <div>
-                            <label htmlFor="stock" className='block mb-2 text-lg'>Stock</label>
+                            <label htmlFor="stock" className='block mb-2 text-sm lg:text-lg'>Stock</label>
                             { !errorStatus?.status && errorStatus?.error?.stock && 
                              <p className='text-red mb-2'>{errorStatus.error?.stock}</p>
                             }
@@ -132,7 +132,7 @@ const ProductModal = (
                     }
                 </div>
                 <div className="w-full mb-4">
-                    <label htmlFor="image" className='block mb-2 text-lg'>Image</label>
+                    <label htmlFor="image" className='block mb-2 text-sm lg:text-lg'>Image</label>
                     { !errorStatus?.status && errorStatus?.error?.image && 
                         <p className='text-red mb-2'>{errorStatus.error.image}</p>
                     }

@@ -13,15 +13,16 @@ export const metadata: Metadata = {
 }
 
 export default async function Page({searchParams}:{searchParams?:searchParams}){  
-    const categories: Array<categories> | undefined = await getCategories();
-    const productData: productsResponse | undefined = await getProducts(searchParams??null);
-    return <main className="grid grid-cols-7 gap-5 p-10">
-        { productData && (productData?.length??0) > 0 
+    const categoryData: Promise<Array<categories> | undefined> = getCategories();
+    const productsData: Promise<productsResponse | undefined> = getProducts(searchParams??null);
+    const [ categories, products ] = await Promise.all([ categoryData, productsData ]);
+    return <main className="lg:grid lg:grid-cols-7 gap-5 p-2 md:p-4 lg:p-6 xl:p-10">
+        { products && (products?.length??0) > 0 
         ? <>
             <FilterForm categories={categories}/>
-            <div className="col-span-5">
+            <div className="mt-4 lg:mt-0 lg:col-span-5">
                 <Suspense fallback={<p key={0}>Loading...</p>}>
-                    <Pagination products={productData}/>
+                    <Pagination products={products}/>
                 </Suspense>
             </div>
         </>

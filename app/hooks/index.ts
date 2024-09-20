@@ -1,3 +1,4 @@
 import useImage from "./useImage";
+import useScreenSize from "./useScreenSize";
 
-export { useImage };
+export { useImage, useScreenSize };

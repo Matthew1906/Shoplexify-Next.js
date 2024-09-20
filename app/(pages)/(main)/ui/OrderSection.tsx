@@ -70,7 +70,7 @@ const OrderSection = ({ product, stock, price }:{ product:string, stock:number, 
         }
     };
     return (stock + orderQuantity)>0 &&
-        <div className="px-4 py-2 border-navy-blue border-2 rounded-lg text-center text-lg">
+        <div className="col-span-2 md:col-span-1 px-4 py-2 border-navy-blue border-2 rounded-lg text-center text-sm lg:text-lg">
             {!isOrdered && <p className={`${roboto_regular.className} mb-4`}>Set amounts and orders:</p>}
             <div className="flex-center gap-5 mb-4">
                 <div className="border-navy-blue border-2 rounded-lg p-2 flex-center gap-4" >

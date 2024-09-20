@@ -33,19 +33,19 @@ const ReviewModal = (
         })
     }
     return (
-        <BaseModal show={show} onHideModal={onHideModal} className="w-5/12 h-auto">
+        <BaseModal show={show} onHideModal={onHideModal} className="w-9/12 lg:w-5/12 h-auto">
             <form onSubmit={handleSubmit} ref={formRef}>
-                <h6 className="font-semibold text-xl mb-5 text-center">Product Review Form</h6>
+                <h6 className="font-semibold text-base lg:text-xl mb-5 text-center">Product Review Form</h6>
                 { isError && <p className={`${roboto_semibold.className} text-red px-1`}>Something went wrong!</p>}
                 <div className="w-full mb-4">
-                    <label htmlFor="body" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Review</label>
+                    <label htmlFor="body" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Review</label>
                     <RatingInput rating={rating} onChange={setRating}/>
                 </div>
                 <div className="w-full">
-                    <label htmlFor="body" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Review</label>
+                    <label htmlFor="body" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Review</label>
                     <textarea 
                         required name="body" rows={5} 
-                        className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"
+                        className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"
                         defaultValue={review?.review??""}
                     />
                 </div>

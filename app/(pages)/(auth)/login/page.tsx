@@ -15,7 +15,8 @@ export default function Login(){
     const handleSubmit = async(event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const response = await fetch('/api/login', {
+        const url = `${process.env.SERVER_URL}/api/login`;
+        const response = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -35,21 +36,21 @@ export default function Login(){
         }
     }
     return <main className='p-5 w-full flex justify-center items-start'>
-        <form onSubmit={handleSubmit} ref={formRef} className="p-10 bg-white border-1 border-black rounded-lg w-1/4 flex-center flex-col gap-2 drop-shadow-md">
-            <h3 className={`${roboto_bold.className} text-2xl`}>Login</h3>
+        <form onSubmit={handleSubmit} ref={formRef} className="p-10 bg-white border-1 border-black rounded-lg w-3/4 md:w-1/2 xl:w-1/4 flex-center flex-col gap-2 drop-shadow-md">
+            <h3 className={`${roboto_bold.className} text-lg lg:text-2xl`}>Login</h3>
             { !errorStatus?.status && errorStatus?.message &&
                 <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.message}</p>
             }
             <div className="w-full">
-                <label htmlFor="email" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Email</label>
-                <input type="text" name="email" id="email" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"/>
+                <label htmlFor="email" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Email</label>
+                <input type="text" name="email" id="email" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"/>
                 { !errorStatus?.status && errorStatus?.error?.email && 
                   <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.error?.email}</p>
                 }
             </div>
             <div className="w-full">
-                <label htmlFor="password" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Password</label>
-                <input type="password" name="password" id="password" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"/>
+                <label htmlFor="password" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Password</label>
+                <input type="password" name="password" id="password" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"/>
                 { !errorStatus?.status && errorStatus?.error?.password && 
                   <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.error?.password}</p>
                 }

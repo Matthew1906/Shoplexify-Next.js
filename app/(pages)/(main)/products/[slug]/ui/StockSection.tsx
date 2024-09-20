@@ -39,7 +39,7 @@ const StockSection = ({ product, stock}: { product:string, stock:number }) =>{
             }
         });   
     };
-    return <div className="px-4 py-2 border-navy-blue border-2 rounded-lg text-center text-lg">
+    return <div className="px-4 py-2 border-navy-blue border-2 rounded-lg text-center text-sm lg:text-lg">
         <p className={`${roboto_regular.className} mb-4`}>Update stock:</p>
         <div className="flex-center gap-5 mb-4">
             <div className="border-navy-blue border-2 rounded-lg p-2 flex-center gap-4" >

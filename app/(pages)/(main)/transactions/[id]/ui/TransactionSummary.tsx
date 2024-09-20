@@ -60,19 +60,19 @@ const TransactionSummary = (
     return <section className="col-span-3 p-8">
         <div className="border-2 border-navy-blue rounded-lg p-5">
             <section>
-                <h4 className="text-2xl font-semibold mb-5">Location</h4>
+                <h4 className="text-lg lg:text-2xl font-semibold mb-5">Location</h4>
                 <AddressMap coordinate={address}/>
-                <p className="my-4 text-xl">Address: <strong>{addressString}</strong></p>
+                <p className="my-4 lg:text-xl">Address: <strong>{addressString}</strong></p>
             </section>
             <section className="mt-4">
-                <h4 className="text-2xl font-semibold mb-2">Fee</h4>
-                <p className="text-xl mb-2"><span>Total Price:</span> <strong>{currencyString(totalPrice)}</strong></p>
-                <p className="text-xl mb-2"><span>Delivery Fee:</span> <strong>{currencyString(deliveryFee)}</strong></p>
+                <h4 className="text-lg lg:text-2xl font-semibold mb-2">Fee</h4>
+                <p className="lg:text-xl mb-2"><span>Total Price:</span> <strong>{currencyString(totalPrice)}</strong></p>
+                <p className="lg:text-xl mb-2"><span>Delivery Fee:</span> <strong>{currencyString(deliveryFee)}</strong></p>
                 <hr className="h-5 border-navy-blue"/>
-                <p className="text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
+                <p className="lg:text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
             </section>
             <section className="mt-4 flex items-center gap-3">
-                <h4 className="text-2xl font-semibold">Status: </h4>
+                <h4 className="text-lg lg:text-2xl font-semibold">Status: </h4>
                 <div className={`p-2 rounded-lg text-white font-semibold ${theme}`}>{status}</div>
             </section>
             <div className="flex-center mt-5 gap-3">

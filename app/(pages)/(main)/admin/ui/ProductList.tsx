@@ -34,7 +34,7 @@ const MonthFilter = ()=>{
         name="month" 
         id="month" 
         onChange={handleSelect} 
-        className="py-2 px-5 bg-navy-blue rounded-lg text-white"
+        className="py-1 lg:py-2 px-2 lg:px-5 bg-navy-blue rounded-lg text-white text-sm lg:text-base"
         defaultValue={parseInt(searchParams.get("month")??new Date().getMonth().toString())}
     >
         {months.map((val, idx)=>{
@@ -44,15 +44,15 @@ const MonthFilter = ()=>{
 }
 
 const ProductList = ({products}:{products:Array<Product>|undefined})=>{
-    return <section id='top-products' className="border-black border-2 rounded-lg p-5">
+    return <section id='top-products' className="mt-4 lg:mt-0 border-black border-2 rounded-lg p-5">
         <div className="flex items-center justify-between mb-5">
-            <h2 className={`font-semibold ${roboto_semibold.className} text-xl`}>Popular Products</h2>
+            <h2 className={`font-semibold ${roboto_semibold.className} lg:text-xl`}>Popular Products</h2>
             <MonthFilter />
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="xl:grid xl:grid-cols-2 gap-2">
         {(products??[]).map((product:Product)=>{
             return <Link href={`/products/${product.slug}`} key={product.slug}> 
-                <div className="flex items-start gap-x-5 gap-y-6">
+                <div className="mb-2 lg:mb-0 flex items-start gap-x-5 gap-y-6 text-xs lg:text-base">
                     <Image 
                         src={product.image_url} 
                         alt={`shoplexify-${product.slug}`} 

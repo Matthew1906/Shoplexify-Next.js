@@ -59,11 +59,11 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     }
     const session = useSession();
     return (
-        <div className="col-span-2 flex flex-col items-start">
+        <div className="lg:col-span-2 px-1 flex flex-col items-start text-sm xl:text-base">
             { session.status == 'authenticated' && session.data.role == 'admin' && <AddProductButton /> }
             <form onSubmit={handleSubmit} method='GET'>
                 <div className="flex flex-col items-start mb-5">
-                    <h3 className={`${roboto_bold.className} text-xl mb-2`}>Categories:</h3>
+                    <h3 className={`${roboto_bold.className} text-base lg:text-xl mb-2`}>Categories:</h3>
                     {categories && categories.map((category:categories)=>{
                         return <div className="flex-center gap-2 mb-2" key={category.id}>
                             <input 
@@ -77,26 +77,26 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                     })}
                 </div>
                 <div className="mb-5">
-                    <h3 className={`${roboto_bold.className} text-xl mb-2`}>Price Range:</h3>
+                    <h3 className={`${roboto_bold.className} text-base lg:text-xl mb-2`}>Price Range:</h3>
                     {priceRangeError && <p className={`${roboto_semibold.className} text-red mb-2`}>{priceRangeError}</p>}
                     <div className="flex mb-2">
-                        <p className={`${roboto_semibold.className} px-4 py-2 border-2 border-navy-blue rounded-l-lg`}>Rp.</p>
+                        <p className={`${roboto_semibold.className} px-2 lg:px-4 py-1 lg:py-2 border-2 border-navy-blue rounded-l-lg`}>Rp.</p>
                         <input 
                             type="number" name="minPrice" id="minPrice" 
                             placeholder="Minimum price"
                             min={0}
                             defaultValue={parseInt(searchParams.get("minPrice")??"0")}
-                            className={`${roboto_semibold.className} px-4 py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
+                            className={`${roboto_semibold.className} px-2 lg:px-4 py-1 lg:py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
                         />
                     </div>
                     <div className="flex">
-                        <p className={`${roboto_semibold.className} px-4 py-2 border-2 border-navy-blue rounded-l-lg`}>Rp.</p>
+                        <p className={`${roboto_semibold.className} px-2 lg:px-4 py-1 lg:py-2 border-2 border-navy-blue rounded-l-lg`}>Rp.</p>
                         <input 
                             type="number" name="maxPrice" id="maxPrice"
                             placeholder="Maximum price"
                             defaultValue={parseInt(searchParams.get("maxPrice")??"20000000")}
                             min={0}
-                            className={`${roboto_semibold.className} px-4 py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
+                            className={`${roboto_semibold.className} px-2 lg:px-4 py-1 lg:py-2 border-2 border-l-0 border-navy-blue rounded-r-lg outline-none`}
                         />
                     </div>
                 </div>
@@ -118,7 +118,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
                         </div>
                     })}
                 </div> */}
-                <div className="flex justify-between gap-5">
+                <div className="flex justify-between gap-2 lg:gap-5">
                     <TextButton text="Reset" theme="secondary" onClick={resetParams}/>
                     <TextButton text="Apply" isForm/>
                 </div>

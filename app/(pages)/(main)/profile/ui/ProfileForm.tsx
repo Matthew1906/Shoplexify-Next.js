@@ -33,25 +33,25 @@ const ProfileForm = ({dob}:{dob:Date|null}) =>{
     }, [dob])
     return <form onSubmit={handleSubmit} ref={formRef} className="p-10">
         <div className="w-full mb-2">
-            <label htmlFor="dob" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Date of Birth</label>
+            <label htmlFor="dob" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Date of Birth</label>
             <input 
                 type="date" name="dob" id="dob" defaultValue={dateString}
-                className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"
+                className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"
             />
             { !errorStatus?.status && errorStatus?.error?.dob && 
                 <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.error?.dob}</p>
             }
         </div>
         <div className="w-full mb-2">
-            <label htmlFor="password" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Password</label>
-            <input type="password" name="password" id="password" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"/>
+            <label htmlFor="password" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Password</label>
+            <input type="password" name="password" id="password" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"/>
             { !errorStatus?.status && errorStatus?.error?.password && 
                 <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.error?.password}</p>
             }
         </div>
         <div className="w-full mb-2">
-            <label htmlFor="confirmPassword" className={`block mb-2 ${roboto_semibold.className} text-lg`}>Confirm Password</label>
-            <input type="password" name="confirmPassword" id="confirmPassword" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-lg px-2 py-1"/>
+            <label htmlFor="confirmPassword" className={`block mb-2 ${roboto_semibold.className} text-sm lg:text-lg`}>Confirm Password</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" className="mb-2 border border-black border-opacity-75 rounded-md w-full text-sm lg:text-lg px-2 py-1"/>
             { !errorStatus?.status && errorStatus?.error?.confirmPassword && 
                 <p className={`${roboto_semibold.className} text-red px-1`}>{errorStatus.error?.confirmPassword}</p>
             }

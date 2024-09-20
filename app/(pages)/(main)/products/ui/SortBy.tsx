@@ -17,13 +17,13 @@ const SortBy = ()=>{
         router.replace(`${pathname}?${editableParams.toString()}`);
         router.refresh(); 
     }
-    return <div className={`flex-center gap-4 ${roboto_regular.className}`}>
-        <p className="text-lg">Sort by: </p>
+    return <div className={`flex-center gap-1 md:gap-4 ${roboto_regular.className}`}>
+        <p className="text-xs md:text-lg">Sort by: </p>
         <select 
             name="sortBy" 
             id="sortby" 
             onChange={handleSelect} 
-            className="py-2 px-5 bg-navy-blue rounded-lg text-white"
+            className="text-xs md:text-base py-1 md:py-2 px-2 md:px-5 bg-navy-blue rounded-lg text-white"
         >
             <option value="name-asc">A to Z</option>
             <option value="name-desc">Z to A</option>

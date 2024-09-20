@@ -1,5 +1,6 @@
 'use client'
 
+import { useScreenSize } from "@/app/hooks";
 import { roboto_semibold } from "@/app/lib/font";
 import { adminOrderMetrics } from "@/app/lib/interface";
 import { CategoryScale, Chart as ChartConfig, LinearScale, LineElement, PointElement, Title } from "chart.js";
@@ -9,6 +10,7 @@ import { Line } from "react-chartjs-2";
 ChartConfig.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
 
 const Chart = ({metrics}:{metrics:adminOrderMetrics|undefined})=>{
+    const screenSize = useScreenSize();
     // console.log('This:'+JSON.stringify(metrics));
     const labels: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const orderCountByMonth = useMemo(()=>{
@@ -25,7 +27,6 @@ const Chart = ({metrics}:{metrics:adminOrderMetrics|undefined})=>{
         labels: labels,
         datasets: [{
             data: orderCountByMonth,
-            // data: [ 1, 2, 0, 1, 2, 0, 2, 3, 4, 1, 5, 3],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -34,20 +35,20 @@ const Chart = ({metrics}:{metrics:adminOrderMetrics|undefined})=>{
     return <Line 
         data={data} 
         options={{ 
-            maintainAspectRatio: false, 
+            // maintainAspectRatio: false, 
             responsive: true, 
             plugins:{
                 title:{
                     display:true,
                     font:{
-                        size:25,
+                        size:screenSize==1?25:15,
                     },
                     text:"Number of orders by month",
                     align:"center"
                 }
             }
         }}
-        className={`max-w-full h-auto border-2 border-black rounded-lg px-10 py-5 ${roboto_semibold.className}`}
+        className={`max-w-full h-40 lg:h-auto border-2 border-black rounded-lg px-10 py-5 ${roboto_semibold.className}`}
     />
 }
 

@@ -17,11 +17,11 @@ const TransactionCard = ({transaction}:{transaction:transactionResponse})=>{
     }, [transaction])
     return <div className="flex justify-between items-center p-5 gap-5 border-2 border-black rounded-md mb-4">
         <div>
-            <h2 className={`${roboto_bold.className} text-xl mb-4`}>
+            <h2 className={`${roboto_bold.className} text-sm lg:text-xl mb-4`}>
                 Order {transaction.id} - {dateString(new Date(transaction.date??""))}
             </h2>
-            <div className="flex items-center gap-5">
-                <p className="text-xl">
+            <div className="flex items-center gap-5 text-sm lg:text-base">
+                <p className="text-sm lg:text-xl">
                     <span>Total:</span>
                     <strong>{currencyString(transaction.total_price)}</strong>
                 </p>

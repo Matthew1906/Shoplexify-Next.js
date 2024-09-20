@@ -44,23 +44,23 @@ const CheckoutForm = ({orders}:{orders:Array<orderResponse>|undefined})=>{
             
         })
     }
-    return <section className="col-span-3 p-8">
+    return <section className="lg:col-span-3 p-2 md:p-4 lg:p-8">
         <form className="border-2 border-navy-blue rounded-lg p-5" onSubmit={checkout}>
             <section>
-                <h4 className="text-2xl font-semibold mb-5">Location</h4>
+                <h4 className="text-lg lg:text-2xl font-semibold mb-5">Location</h4>
                 <AddressMap coordinate={address}/>
-                <p className="my-4 text-xl">Address: <strong>{address.address}</strong></p>
+                <p className="my-4 lg:text-xl">Address: <strong>{address.address}</strong></p>
                 <div className="flex-center">
                     <TextButton text="Find Address" onClick={findAddress}/>
                 </div>
                 <SelectAddressModal show={showSelectAddress} onHideModal={selectAddress} saveAddress={saveAddress}/>
             </section>
             <section className="mt-4">
-                <h4 className="text-2xl font-semibold mb-2">Fee</h4>
-                <p className="text-xl mb-2"><span>Total Price:</span> <strong>{currencyString(totalPrice)}</strong></p>
-                <p className="text-xl mb-2"><span>Delivery Fee:</span> <strong>{currencyString(deliveryFee)}</strong></p>
+                <h4 className="text-lg lg:text-2xl font-semibold mb-2">Fee</h4>
+                <p className="lg:text-xl mb-2"><span>Total Price:</span> <strong>{currencyString(totalPrice)}</strong></p>
+                <p className="lg:text-xl mb-2"><span>Delivery Fee:</span> <strong>{currencyString(deliveryFee)}</strong></p>
                 <hr className="h-5 border-navy-blue"/>
-                <p className="text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
+                <p className="lg:text-xl mb-2"><span>Final Price:</span> <strong>{currencyString(totalPrice + deliveryFee)}</strong></p>
             </section>
             <div className="flex-center mt-5">
                 <TextButton text="Checkout" theme="secondary" isForm/>
