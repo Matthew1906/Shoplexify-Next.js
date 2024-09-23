@@ -5,6 +5,7 @@ import {
     productMutationResponse, productResponse, 
     productsResponse, searchParams 
 } from "@/app/lib/interface";
+import { revalidateTag } from "next/cache";
 
 export const createProduct = async(formData: FormData):Promise<productMutationResponse|undefined>=>{
     try {
@@ -18,6 +19,7 @@ export const createProduct = async(formData: FormData):Promise<productMutationRe
             body: formData
         });
         const jsonResponse = await response.json();
+        revalidateTag("products")
         return jsonResponse;
     } catch(error) {
         console.log(error);
@@ -81,6 +83,7 @@ export const updateProduct = async(slug:string, formData: FormData):Promise<prod
             body: formData
         });
         const jsonResponse = await response.json();
+        revalidateTag("products")
         return jsonResponse;
     } catch(error) {
         console.log(error);
@@ -101,6 +104,8 @@ export const updateProductStock = async(slug:string, stock:number)=>{
             body: formData
         });
         const jsonResponse = await response.json();
+        revalidateTag("cart");
+        revalidateTag("products");
         return jsonResponse;
     } catch(error) {
         console.log(error);

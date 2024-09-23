@@ -9,10 +9,11 @@ import {
 export const getMetrics = async():Promise<adminMetric|undefined>=>{
     try {
         const url = `${process.env.SERVER_URL}/api/admin`;
+        const header = new Headers(headers());
         const response = await fetch(url, { 
-            method:'GET', 
-            headers:headers(), 
-            next: { revalidate: 3600 } // Time based revalidation every hour
+            method: 'GET', 
+            next: { revalidate: 3600 }, // Time based revalidation every hour
+            headers: header
         });
         const jsonResponse = await response.json();
         return jsonResponse;
@@ -24,10 +25,11 @@ export const getMetrics = async():Promise<adminMetric|undefined>=>{
 export const getOrderMetrics = async():Promise<adminOrderMetrics|undefined>=>{
     try {
         const url = `${process.env.SERVER_URL}/api/admin/transactions`;
+        const header = new Headers(headers());
         const response = await fetch(url, { 
             method:'GET', 
-            headers:headers(), 
-            next: { revalidate: 3600 } // Time based revalidation every hour
+            next: { revalidate: 3600 }, // Time based revalidation every hour
+            headers: header, 
         });
         const jsonResponse = await response.json();
         return jsonResponse;
@@ -44,11 +46,12 @@ export const getTopProducts = async(searchParams: adminSearchParams|null):Promis
         } else {
             editableParams.set("month", new Date().getMonth().toString())
         }
+        const header = new Headers(headers());
         const url = `${process.env.SERVER_URL}/api/admin/products?${editableParams.toString()}`;
         const response = await fetch(url, { 
             method:'GET', 
-            headers:headers(), 
-            next: { revalidate: 3600 } // Time based revalidation every hour
+            next: { revalidate: 3600 }, // Time based revalidation every hour
+            headers:header, 
         });
         const jsonResponse = await response.json();
         return jsonResponse.topProducts;
@@ -62,9 +65,10 @@ export const getTransactions = async(searchParams: adminSearchParams|null):Promi
         const editableParams = new URLSearchParams();
         editableParams.set("page", (searchParams?.page??"1").toString());
         const url = `${process.env.SERVER_URL}/api/transactions?${editableParams.toString()}`;
+        const header = new Headers(headers());
         const response = await fetch(url, { 
             method:'GET', 
-            headers:headers(), 
+            headers:header, 
             next: { revalidate: 3600 } // Time based revalidation every hour
         });
         const jsonResponse = await response.json();

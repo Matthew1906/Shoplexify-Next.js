@@ -3,7 +3,6 @@
 import slugify from "slugify";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { deleteFile, uploadImage } from "@/app/lib/imagekit";
@@ -140,7 +139,6 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                         })
                     }
                 }))
-                revalidateTag("products")
                 return Response.json({ status:true, slug:updatedProduct.slug }, { status:200 })
             } else if (parsedData.error){
                 return Response.json({ status:false, error:parsedData.error.flatten().fieldErrors }, { status:422 });
@@ -177,9 +175,6 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                 where:{ id:productExist.id },
                 data:{ stock:newStock }
             });
-            revalidateTag("cart")
-            revalidatePath('/products/'+productExist.slug);
-            revalidatePath('/products/'+updatedProduct.slug);
             return Response.json({ status:true, message:"Product stock has been updated!" }, { status:200 })
             
         }

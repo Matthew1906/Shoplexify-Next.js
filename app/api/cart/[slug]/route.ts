@@ -2,7 +2,6 @@
 
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(req:NextRequest, { params }: { params: { slug: string } }){
@@ -64,10 +63,6 @@ export async function POST(req:NextRequest, { params }: { params: { slug: string
                             where: { slug: slug },
                             data: { stock: { decrement:quantity }}
                         })
-                        // Revalidate products path so that they display the correct stock
-                        revalidatePath('/products/' + slug);
-                        // Revalidate cart
-                        revalidateTag('cart');
                         return Response.json({ status:true }, { status:201 });
                     }    
                 }
@@ -121,10 +116,6 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                             where: { slug: slug },
                             data: { stock: { decrement:quantity }}
                         })
-                        // Revalidate products path so that they display the correct stock
-                        revalidatePath('/products/' + slug);
-                        // Revalidate the user's cart
-                        revalidateTag('cart');
                         return Response.json({ status:true }, { status:200 });
                     } else {
                         return Response.json({ status:false }, { status:404 });
@@ -162,10 +153,6 @@ export async function DELETE(req:NextRequest, { params }: { params: { slug: stri
                     await prisma.orders.delete({
                         where:{ user_id_product_id: { user_id: user.id, product_id: product.id} },
                     })
-                    // Revalidate products path so that they display the correct stock
-                    revalidatePath('/products/' + slug);
-                    // Revalidate the user's cart
-                    revalidateTag('cart');
                     return Response.json({ status:true }, { status:200 });
                 } 
                 return Response.json({ status:false }, { status:404 });

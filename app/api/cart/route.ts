@@ -3,7 +3,6 @@
 import prisma from "@/app/lib/prisma";
 import { orders } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest){
@@ -118,8 +117,6 @@ export async function PUT(req: NextRequest){
                         user_id:user.id
                     }
                 });
-                revalidateTag('cart');
-                revalidateTag('transactions');
                 return Response.json({ status:true, transactionId:newTransaction.id }, { status:200 });
             }
         }
@@ -157,8 +154,6 @@ export async function DELETE(req: NextRequest){
                     user_id:user?.id
                 }
             })
-            revalidateTag("cart");
-            revalidateTag("products"); // product stock is updated, must be refreshed
             return Response.json({ status:true }, { status:200 });
         }
         return Response.json({ status:false }, { status:401 });

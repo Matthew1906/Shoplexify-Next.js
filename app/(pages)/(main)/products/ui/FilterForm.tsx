@@ -4,7 +4,7 @@ import AddProductButton from "./AddProductButton"
 import { useSession } from "next-auth/react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { categories } from "@prisma/client"
-import { FormEvent, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { TextButton } from "@/app/components/buttons"
 import { roboto_bold, roboto_semibold } from "@/app/lib/font"
 
@@ -15,6 +15,7 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
+    const formRef = useRef<HTMLFormElement|null>(null);
     // Submit form to change search params, thus altering the displayed products
     const handleSubmit = (event:FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
@@ -55,13 +56,15 @@ const FilterForm = ({categories}:{categories:Array<categories>|undefined})=>{
     }
     // Reset parameters
     const resetParams = ()=>{
-        router.replace(pathname);
+        router.replace(`${pathname}?page=1`);
+        formRef?.current?.reset();
     }
+    // session
     const session = useSession();
     return (
         <div className="lg:col-span-2 px-1 flex flex-col items-start text-sm xl:text-base">
             { session.status == 'authenticated' && session.data.role == 'admin' && <AddProductButton /> }
-            <form onSubmit={handleSubmit} method='GET'>
+            <form onSubmit={handleSubmit} method='GET' ref={formRef}>
                 <div className="flex flex-col items-start mb-5">
                     <h3 className={`${roboto_bold.className} text-base lg:text-xl mb-2`}>Categories:</h3>
                     {categories && categories.map((category:categories)=>{
