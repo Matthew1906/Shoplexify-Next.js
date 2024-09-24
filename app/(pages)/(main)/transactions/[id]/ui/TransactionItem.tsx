@@ -7,7 +7,7 @@ import { currencyString, popularityString } from "@/app/lib/string";
 const TransactionItem = ({item}:{item:transactionHistoryDetails})=>{
     return <div className="grid grid-cols-2 lg:grid-cols-3 items-start gap-2 mb-5">
          <Image 
-            src={item?.image_url}
+            src={item?.image_url+`?v=${Date.now()}`}
             alt={item?.slug}
             width={250}
             height={250}

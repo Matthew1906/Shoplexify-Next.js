@@ -10,7 +10,7 @@ import { OrderSection } from "../../ui";
 const OrderItem = ({item}:{item:orderResponse})=>{
     return <div className="grid grid-cols-2 md:grid-cols-3 items-start gap-2 mb-5">
          <Image 
-            src={item?.image_url}
+            src={item?.image_url+`?v=${Date.now()}`}
             alt={item?.slug}
             width={250}
             height={250}

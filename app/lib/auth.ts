@@ -1,6 +1,5 @@
 import crypto from "crypto";
 import Credentials from "next-auth/providers/credentials";
-import prisma from "./prisma";
 import { NextAuthOptions } from "next-auth";
 
 export const comparePassword = async(password: string, encryptedPassword:string): Promise<boolean> => {
@@ -45,20 +44,20 @@ export const authOptions:NextAuthOptions = {
             name: 'Credentials',
             async authorize(credentials) {
                 'use server';
-                const user = await prisma.users.findFirst({
-                    where: { email: credentials?.email }
-                });
                 return {
-                    id: user?.id + "",
-                    email: user?.email,
-                    name: user?.name,
-                    role: user?.id == 1 ? 'admin' : 'user',
-                    dob: (user?.dob??"None").toString()
+                    id: credentials?.id + "",
+                    email: credentials?.email,
+                    name: credentials?.name,
+                    role: (credentials?.id??'0') == '1' ? 'admin' : 'user',
+                    dob: (credentials?.dob??"None").toString()
                 };
             },
             credentials: {
-                email: { label: "email", type: "text", placeholder: "Enter your email" },
-                password: { label: "Password", type: "password" },
+                id: { label: "id", type:"text"},
+                email: { label: "email", type: "text" },
+                password: { label: "password", type: "password" },
+                name: { label: "username", type:"text"},
+                dob: { label:"dob", type:"datetime"},
             },
         })
     ],

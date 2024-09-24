@@ -11,11 +11,10 @@ const ProductCard = ({product}:{product:Product})=>{
     return <Link href={`/products/${product.slug}`} prefetch>
         <div className="w-full h-full p-2 md:p-4 shadow-lg shadow-neutral-400 text-sm md:text-base">
             <Image 
-                src={product.image_url} 
+                src={product.image_url+`?v=${Date.now()}`} 
                 alt={`shoplexify-${product.slug}`} 
                 width={200} 
                 height={300}
-                // objectFit="cover"
                 className="rounded-md opacity-95 w-full h-[60%]"
             />
             <b className={`block mt-2 ${roboto_light.className} text-sm md:text-lg`}>{trimString(product.name, 20)}</b>

@@ -20,7 +20,7 @@ export async function POST(req:Request){
             }
             const isSamePassword = await comparePassword(password?.toString()??"", user.password);
             if(isSamePassword){
-                return Response.json({ status:true, data:user, message:"Login Successful" }, { status:200 });
+                return Response.json({ status:true, user:user, message:"Login Successful" }, { status:200 });
             } else {
                 return Response.json({ status:false, message:"Password doesnt match" }, { status:401 });
             }

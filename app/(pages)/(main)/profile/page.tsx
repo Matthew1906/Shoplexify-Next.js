@@ -29,7 +29,7 @@ export default async function ProfilePage(){
                 <div className="lg:text-xl col-span-2">
                     <h5 className="font-bold mb-2">{profile?.name}</h5>
                     <p className="mb-2 underline">{profile?.email}</p>
-                    {profile?.dob!=="None" && <p className="font-semibold">{dateString(new Date(profile?.dob??""))}</p>}
+                    {profile?.dob!=="None" && <p className="font-semibold">{profile?.dob!=='null' ? dateString(new Date(profile?.dob??"")):"No DOB yet"}</p>}
                 </div>
             </div>
             <ProfileForm dob={new Date(profile?.dob??"")} />

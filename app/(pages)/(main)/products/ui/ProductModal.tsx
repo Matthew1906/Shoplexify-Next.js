@@ -39,11 +39,12 @@ const ProductModal = (
                     formData.set('image', res);
                     if(product){
                         updateProduct(product.slug, formData).then(res=>{
-                            setErrorStatus(res);    
+                            setErrorStatus(res);  
                             if(res?.status){
                                 const slug = res.slug;
                                 router.push("/products/"+slug);
                                 router.refresh();
+                                onHideModal();
                             } else {
                                 formRef.current?.reset();
                             }
@@ -55,6 +56,7 @@ const ProductModal = (
                                 const slug = res.slug;
                                 router.push("/products/"+slug);
                                 router.refresh();
+                                onHideModal();
                             } else {
                                 formRef.current?.reset();
                             }

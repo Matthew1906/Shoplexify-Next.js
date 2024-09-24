@@ -39,7 +39,7 @@ export default async function ProductPage(
             { product && <>
             <section id="product-info" className="flex flex-col items-center lg:flex-row lg:items-start gap-5">
                 <Image 
-                    src={product?.image_url}
+                    src={product?.image_url+`?v=${Date.now()}`}
                     alt={product?.slug}
                     width={350}
                     height={350}

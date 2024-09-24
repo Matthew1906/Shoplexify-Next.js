@@ -24,8 +24,11 @@ export default function Login(){
         setErrorStatus({status:data.status, error:data?.error, message:data?.message});
         if(data.status){
             signIn('credentials', {
-                email: formData.get('email'),
+                email: data.user.email,
                 password: formData.get('password'),
+                name: data.user.name,
+                dob: data.user.dob,
+                id: data.user.id,
                 redirect: false,
             }).then((res)=>{
                 router.push('/');

@@ -50,7 +50,7 @@ const SelectAddressModal = (
                     type="text" name="query" id="query"
                     value={query}
                     onChange={(event)=>setQuery(event.target.value)}
-                    className="p-1 lg:p-2 outline-none" 
+                    className="p-1 lg:p-2 outline-none lg:grow" 
                     onKeyDown={handleEnter}
                 />
                 <button className="bg-white text-navy-blue lg:p-2 rounded-r-md" onClick={searchLocation}><MdSearch className="w-5 h-5" /></button>

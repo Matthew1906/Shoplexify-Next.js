@@ -54,7 +54,7 @@ const ProductList = ({products}:{products:Array<Product>|undefined})=>{
             return <Link href={`/products/${product.slug}`} key={product.slug}> 
                 <div className="mb-2 lg:mb-0 flex items-start gap-x-5 gap-y-6 text-xs lg:text-base">
                     <Image 
-                        src={product.image_url} 
+                        src={product.image_url+`?v=${Date.now()}`} 
                         alt={`shoplexify-${product.slug}`} 
                         width={150} 
                         height={150}
