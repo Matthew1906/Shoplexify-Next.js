@@ -50,14 +50,39 @@ export async function PATCH(req:Request){
         const password = formData.get("password");
         const confirmPassword = formData.get("confirmPassword");
         const parsedCredentials = z.object({
-            dob:z.date()
-                .min(new Date("1900-01-01"), { message: "Too old" })
-                .max(new Date("2014-01-01"), { message: "Too young" }),
-            password: z.string().min(5),
-            confirmPassword: z.string().min(5)
+            dob:z.date().optional(),
+            password: z.string().optional(),
+            confirmPassword: z.string().optional()
+        }).refine((data) => {
+            const { dob, password, confirmPassword } = data;
+            // Condition 1: Only dob is filled
+            if (dob && !password && !confirmPassword) return true;
+            // Condition 2: Only password and confirmPassword are filled
+            if (!dob && password && confirmPassword) return true;
+            // Condition 3: All are filled
+            if (dob && password && confirmPassword) return true;
+            // No valid combination, return false
+            return false;
         }).safeParse({dob, password, confirmPassword});
         if(parsedCredentials.success){
-            if (parsedCredentials.data.password != parsedCredentials.data.confirmPassword){
+            const dobSchema = z.date().min(new Date("1900-01-01"), { message: "Too old" })
+                .max(new Date("2014-01-01"), { message: "Too young" });
+            const passwordSchema = z.object({password:z.string().min(5), confirmPassword:z.string().min(5)});
+            // Revalidate password input
+            if(parsedCredentials.data.password){
+                const parsedPassword = passwordSchema.safeParse({password, confirmPassword});
+                if(!parsedPassword.success){
+                    return Response.json({ status:false, error:parsedPassword.error.flatten().fieldErrors }, { status:422 });
+                }
+            }
+            // Revalidate dob input
+            if(parsedCredentials.data.dob){
+                const parsedDob = dobSchema.safeParse(dob);
+                if(!parsedDob.success){
+                    return Response.json({ status:false, error:{dob:parsedDob.error.errors[0].message} }, { status:422 });
+                }
+            }
+            if (parsedCredentials.data.password && parsedCredentials.data.password != parsedCredentials.data.confirmPassword){
                 return Response.json({ status:false, error:{confirmPassword:"Confirm password doesnt match with the password!"}}, { status:401 });
             }
             const sessionData = await getServerSession();
@@ -66,19 +91,40 @@ export async function PATCH(req:Request){
                 if(!user){
                     return Response.json({ status:false, message:"Account doesn't exists!" }, { status:404 })
                 }
-                const isSamePassword = await comparePassword(parsedCredentials.data.password, user.password);
-                if(isSamePassword){
-                    return Response.json({ status:false, error:{ password:"This is your old password!" } }, { status:422 });
-                }
-                const newPassword = await generatePassword(parsedCredentials.data.password); 
-                await prisma.users.update({
-                    where:{id:user.id},
-                    data:{
-                        dob: parsedCredentials.data.dob,
-                        password: String(newPassword),
+                if(parsedCredentials.data.password){
+                    const isSamePassword = await comparePassword(parsedCredentials.data.password, user.password);
+                    if(isSamePassword){
+                        return Response.json({ status:false, error:{ password:"This is your old password!" } }, { status:422 });
                     }
-                })
-                return Response.json({ status:true }, { status:200 })
+                    const newPassword = await generatePassword(parsedCredentials.data.password);
+                    if(parsedCredentials.data.dob){
+                        await prisma.users.update({
+                            where:{id:user.id},
+                            data:{
+                                dob: parsedCredentials.data.dob,
+                                password: String(newPassword),
+                            }
+                        })
+                        return Response.json({ status:true }, { status:200 })
+                    } else {
+                        await prisma.users.update({
+                            where:{id:user.id},
+                            data:{
+                                password: String(newPassword),
+                            }
+                        })
+                        return Response.json({ status:true }, { status:200 })
+                    }
+                } else {
+                    await prisma.users.update({
+                        where:{id:user.id},
+                        data:{
+                            dob: parsedCredentials.data.dob,
+                        }
+                    })
+                    return Response.json({ status:true }, { status:200 })
+                }
+                
             }
             return Response.json({ status:false, message:"Account doesn't exists!" }, { status:404 })
         } else if (parsedCredentials.error){
