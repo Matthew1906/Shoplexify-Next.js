@@ -6,8 +6,6 @@
 
 #### The purpose of this project is to improve my web development skills using the Next.js However, in terms of UI/UX, the design might not be good (it should be responsive though). This app contains both pages (frontend) and API routes (backend), therefore I can use this to assist future practice projects (If I want to learn a frontend framework I can use the Backend from this deployed app and vice versa)
 
-#### This project is a Next.js version of my previous project, [Shoplexify](https://github.com/Matthew1906/Shoplexify) (made with Python Flask)
-
 #### While this app can stand on its own, any bugs I found wont be fixed here. Instead it will be updated in this [repository](https://github.com/Matthew1906/Shoplexify-Turborepo), which is the final form of this project: A Turborepo version built with Next.js for the Frontend and Express.js for the Backend.
 
 #### I used [NextAuth](https://next-auth.js.org/) for authentication and authorization, [ImageKit](https://imagekit.io/) to store images, [Tailwind CSS](https://tailwindcss.com/) for styling, and [Prisma ORM](https://www.prisma.io/orm) for database management.
