@@ -15,9 +15,9 @@ const ProfileForm = ({dob}:{dob:Date|null}) =>{
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         updateProfile(formData).then(data=>{
-            console.log(data);
             setErrorStatus({status:data.status, error:data?.error, message:data?.message});
             if(data.status){
+                alert("Profile updated! Log in again to view the changes!");
                 router.refresh();
             } else {
                 formRef?.current?.reset();
