@@ -120,15 +120,11 @@ export async function GET(req:NextRequest){
                 num_sold: quantities.reduce((a,b)=>a+b, 0),
                 avg_rating: Math.fround(ratings.reduce((a,b)=>a+b, 0)/ratings.length)
             }
-        })
-        // const ratings = searchParams.get('rating')?.split(",").map(rating=>parseInt(rating))??[];
+        });
         return NextResponse.json({
             page:page,
             length:length,
             data:products
-            // data:isQueryExist('rating') 
-            // ? products.filter(product=>ratings.includes(Math.ceil(product.avg_rating)))
-            // : products
         }, { status:200 });
     } catch (error) {
         return NextResponse.json({
@@ -178,22 +174,14 @@ export async function POST(req:NextRequest){
                         price: parsedData.data.price,
                         stock: parsedData.data.stock,
                         image_url: image,
-                        slug: slug
+                        slug: slug,
+                        product_categories:{
+                            create:categories.map((category)=>(
+                                { categories:{ connect:{ slug: category.toString() } } }
+                            ))
+                        }
                     }
                 })
-                await Promise.all(categories.map(async(category)=>{
-                    const categoryFromDB = await prisma.categories.findFirst({
-                        where:{slug:category.toString()}
-                    })
-                    if(categoryFromDB){
-                        await prisma.product_categories.create({
-                            data:{
-                                category_id: categoryFromDB.id,
-                                product_id: newProduct.id
-                            }
-                        })
-                    }
-                }))
                 return Response.json({ status:true, slug:newProduct.slug }, { status:201 })
             } else if (parsedData.error){
                 return Response.json({ status:false, error:parsedData.error.flatten().fieldErrors }, { status:422 });

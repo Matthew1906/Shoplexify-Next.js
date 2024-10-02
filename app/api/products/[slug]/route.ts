@@ -112,6 +112,9 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                 if(!deleteImageStatus){
                     return Response.json({ status:false, error:{ image:"Unexpected error occurred, please retry!" } }, { status:500 });
                 }
+                await prisma.product_categories.deleteMany({
+                    where:{ product_id: productExist.id }
+                })
                 const { imageId, image } = await uploadImage(encodedImage??"", newSlug, '');
                 const updatedProduct = await prisma.products.update({
                     where:{ id:productExist.id },
@@ -120,25 +123,14 @@ export async function PUT(req:NextRequest, { params }: { params: { slug: string 
                         description: parsedData.data.description,
                         price: parsedData.data.price,
                         image_url: image,
-                        slug: newSlug
+                        slug: newSlug,
+                        product_categories:{
+                            create:categories.map((category)=>(
+                                { categories:{ connect:{ slug: category.toString() } } }
+                            ))
+                        }
                     }
                 })
-                await prisma.product_categories.deleteMany({
-                    where:{ product_id: updatedProduct.id }
-                })
-                await Promise.all(categories.map(async(category)=>{
-                    const categoryFromDB = await prisma.categories.findFirst({
-                        where:{slug:category.toString()}
-                    })
-                    if(categoryFromDB){
-                        await prisma.product_categories.create({
-                            data:{
-                                category_id: categoryFromDB.id,
-                                product_id: updatedProduct.id
-                            }
-                        })
-                    }
-                }))
                 return Response.json({ status:true, slug:updatedProduct.slug }, { status:200 })
             } else if (parsedData.error){
                 return Response.json({ status:false, error:parsedData.error.flatten().fieldErrors }, { status:422 });
@@ -176,7 +168,6 @@ export async function PATCH(req:NextRequest, { params }: { params: { slug: strin
                 data:{ stock:newStock }
             });
             return Response.json({ status:true, message:"Product stock has been updated!" }, { status:200 })
-            
         }
         return Response.json({ status:false, message:"Not Authorized" }, { status:401 });
     } catch(error) {

@@ -81,9 +81,7 @@ export async function PUT(req: NextRequest){
             const deliveryFee = parseInt(formData.get("deliveryFee")?.toString()??"0");
             const orders = await prisma.orders.findMany({
                 where:{ user_id: user.id },
-                include:{
-                    products: true
-                }
+                include:{ products: true }
             });
             if(orders.length<=0){
                 return Response.json({ status:false }, { status:404 });
@@ -96,22 +94,16 @@ export async function PUT(req: NextRequest){
                         delivery_status: 'Unsent',
                         payment_method: 'Unknown',
                         payment_status: 'Unpaid',
-                        user_id: user.id
+                        user_id: user.id,
+                        transaction_details:{
+                            create:orders.map((order)=>({ 
+                                quantity:order.quantity,
+                                products: { connect:{ id: order.product_id } },
+                                price: order.products.price,
+                            }))
+                        }
                     }
                 });
-                await Promise.all(orders.map(async(order:orders)=>{
-                    const product = await prisma.products.findFirst({
-                        where:{ id: order.product_id }
-                    });
-                    await prisma.transaction_details.create({
-                        data:{
-                            transaction_id:newTransaction.id,
-                            quantity: order.quantity,
-                            price: product?.price??0,
-                            product_id: order.product_id
-                        }
-                    });
-                }));
                 await prisma.orders.deleteMany({
                     where:{
                         user_id:user.id
